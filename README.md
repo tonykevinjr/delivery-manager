@@ -102,3 +102,11 @@ Report detail tabs are Scheduled, Single, Batch. Single filters saved single run
 End-shift save now rejects changed odometer mileage when the shift has zero completed deliveries. Canceled/pending/ready orders and completed deliveries from other shifts do not satisfy the check. Unchanged odometer with zero deliveries remains valid. Both start and end readings can be corrected in the end dialog; start changes are audited. History edits use the same guard, with no overwrite of existing records on upgrade. This is the user's requested consistency rule, not an assertion that all real-world driving requires a delivery.
 
 Twenty-three tests passed, including zero-delivery mileage guard and Single/legacy run filtering. Browser verified tab order, Single records and pagination. Saved state remains unchanged on validation failure.
+
+## Release 0.4.7 — explicit required item choices and alcohol receipts
+
+New orders require explicit Yes/No for Drinks or Ice Cream and Alcohol, with neither preselected. Existing explicit answers are retained when editing; legacy missing alcohol flags require an answer upon edit. Both native form validation and domain checks reject unanswered/invalid values for singles, batch stops and appended orders. Drinks Yes still requires item notes and confirmation before customer text preparation. Alcohol Yes shows the requested receipt/signature reminder immediately, on the order card, at run preparation and at Delivered confirmation. This is a reminder, not a signature-capture or compliance-verification feature.
+
+Customer placeholder is now Enter customer name. Twenty-four automated tests pass. Browser verified save blocked for unanswered questions and the alcohol reminder persisted on the saved order.
+
+Multiple drivers can use the same hosted URL on separate phones: IndexedDB, settings, customer records and backups are local per browser/device, without app accounts or automatic cross-device dispatch/sync. A separate repository is not needed for independent records; no Charlotte repository or shared database was created.
