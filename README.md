@@ -132,3 +132,9 @@ CSV now uses the visible From/Through dates directly, even without Apply. An emp
 Shared defaults provide the restaurant address and the owner-confirmed Mike/Tony contacts in config.js. These are public source values, not secrets. Missing defaults are filled without overwriting customized values. The previously mistaken Mike number is corrected once to the newly supplied report number. Help is last in Settings with a popup offering Text Tony (usually quick response) and Call Tony — urgent. It launches sms:/tel: only; no message or call was made during tests. Contact settings remain editable.
 
 Thirty-one tests pass. Browser checked bulk warning sequence and cancel/no row loss, direct date export/download contents, empty-range handling, manual planner, and correct Help link destinations. No user records were deleted during UI checks. No geographic API account was created.
+
+## Release 0.4.10 — defaults visible in both real and sample Settings
+
+Fixed sample initialization and migration: both modes now display the confirmed restaurant address and Mike contact. Known sample placeholder addresses and blank/whitespace fields are replaced, while genuine custom values remain. New sample databases use the shared defaults immediately. Use restaurant defaults in read-only Essentials explicitly restores just the restaurant address and Mike number without changing reimbursement, customers or shifts. Storage's config import is versioned with the rest of the release.
+
+Thirty-three tests pass, including new/old sample settings and custom-value preservation. Browser verified Essentials shows the confirmed address, +12062508612 and the restore-defaults action.

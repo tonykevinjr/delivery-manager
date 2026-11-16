@@ -1,6 +1,7 @@
+import {DEFAULT_SETTINGS} from './config.js?v=0.4.10';
 // Synthetic records only. Stored in a separate IndexedDB database.
 export function createDemoData(anchor=new Date()){
- const data={settings:{restaurant:'Sample restaurant, Seattle, WA',mike:'',rate:.73},shifts:[],deliveries:[],runs:[],customers:[],audit:[],demoSeedVersion:1};
+ const data={settings:{...DEFAULT_SETTINGS,rate:.73},shifts:[],deliveries:[],runs:[],customers:[],audit:[],demoSeedVersion:1};
  const end=new Date(anchor);end.setHours(0,0,0,0);const start=new Date(end);start.setMonth(start.getMonth()-3);let odo=52000,index=0;
  for(let day=new Date(start);day<end;day.setDate(day.getDate()+1)){
   if(![3,4,5].includes(day.getDay()))continue;
