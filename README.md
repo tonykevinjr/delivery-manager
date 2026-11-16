@@ -84,3 +84,13 @@ Home Screen PNGs have new filenames and both apple-touch-icon and manifest refer
 Sample-only migration seeds five completed deliveries and three returned runs into the current sample shift exactly once, creating a current shift if none exists. Existing sample entries and historical records are preserved, real records are untouched. Shift cards still represent current-shift activity, not lifetime totals.
 
 Nineteen tests passed. Browser verified conditional notes, verbatim multiline reminder, symmetrical cog appearance, and nonzero sample Shift counters. Maps Go/Steps and Home Screen icon changes still require iPhone verification.
+
+## Release 0.4.5 — editable addresses and inspectable route handoff
+
+Edit address is available for pending, ready, active and completed orders, including historical run details. Corrections are audited and preserve stage, completion time, customer record and batch/run membership. Current batch groups include Review / reopen remaining route, with fully qualified text and independent single-stop navigation links. Existing Maps sessions are never silently replaced.
+
+Route handoff now fully qualifies Seattle addresses with United States and percent-encodes spaces. If the final delivery address exactly matches the configured restaurant after punctuation/case normalization, it is used once as the final destination rather than duplicated as a waypoint and restaurant return. This addresses a concrete ambiguity in the reported test, but does not prove a root cause for Apple's selection of another restaurant. Single-stop and batch text-address resolution still need iPhone comparison; exact coordinates/place identifiers would require a separately verified location source.
+
+Settings includes backup-first Home Screen icon refresh guidance: save a full backup in Files; add the current Safari page as another Home Screen web app while retaining the old icon; verify the new icon and records, restoring the backup if the new app has empty storage. Do not clear Safari website data, and do not delete the old app before backup/restoration is verified. iOS owns existing installed icon refresh.
+
+Twenty-one tests pass, including duplicate restaurant waypoint elimination and address corrections at every stage. Browser verified editing a completed batch address preserved completion time/status and remaining-route review excluded that completed stop. Apple Maps route resolution and existing Home Screen icon remain on-device validation.
