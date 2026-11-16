@@ -54,3 +54,13 @@ Reports has Scheduled and Batch detail filters, newest-first with ten items per 
 ## Release 0.4.1 — update recovery
 
 Versioned CSS/module URLs prevent mixed releases. The service worker downloads with HTTP-cache revalidation, activates after a successful full download, and claims clients without forcing open forms to reload. Online app fetches bypass the browser HTTP cache; offline fallback retains old caches for open older pages. IndexedDB is never cleared. Settings → Check for updates fetches uncached release metadata and offers an explicit reload if newer. Service-worker checks run on launch and returning to the foreground. Twelve automated checks pass, including uncached version checks and offline/error handling; browser verified version display, update button, and unchanged saved sample records. Target iPhone adoption still needs user confirmation.
+
+## Release 0.4.2 — batch additions and end-shift recovery
+
+Add orders from an expanded current batch or Add delivery → Add to batch. Only one unfinished batch can be created per shift. Added stops persist as pending with the existing batch ID. For a departed batch, Mark ready appends the stop to the active run and records the change; existing Maps navigation is not silently modified. Batch View stops/Collapse is a dark green button anchored at top right on mobile.
+
+Delete all saved customers uses an explicit irreversible confirmation, redacts linked contact snapshots/audit copies, and preserves shift totals. The confirmation warns that current order contacts are also redacted. No customer deletion is performed during upgrades.
+
+End Shift now allows completed open runs, clearly states that saving confirms the return trip, and closes those runs at the shift end timestamp. Unfinished stops and incomplete run references still block finalization. No automatic return timestamp is inferred from the last drop-off. Report dates use bounded native-input wrappers to prevent iOS intrinsic sizing from exceeding their container. Browser measurements show equal field boundaries; actual iPhone rendering remains user verification.
+
+Fifteen tests pass, including end-shift state, append membership and privacy deletion. Browser checked both Add to batch entry points, saved appended stop, Delete all confirmation/cancel (no contacts deleted), and date wrapper bounds.
