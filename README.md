@@ -28,3 +28,17 @@ This is not ready for payroll reliance. Routing is manual, without driving estim
 ## Handoff
 
 Source is in dist/ with no build step. PROJECT_SPEC.md is the product reference. DECISIONS.md records the first milestone and unresolved service choices. Hosting has not been configured; localhost on this Mac is not an iPhone-installable URL. Choose stable HTTPS hosting and test on the target device before real use. Do not commit private backups or customer records.
+
+## iPhone test release 0.3
+
+Hosted app: https://tonykevinjr.github.io/delivery-manager/
+
+Sample mode: https://tonykevinjr.github.io/delivery-manager/?demo=1
+
+The sample database is separate from real records and creates three rolling months of fictional Wednesday/Thursday/Friday shifts. Exports are labeled SAMPLE, reports cannot be sent to Mike, and sample backups cannot replace real records. Return to the real app using the sample banner. No automatic real-data seeding occurs.
+
+New delivery entry distinguishes Single Delivery from Batch Delivery. Batch stops are drafted sequentially and saved together, with batch IDs preserved across editing and route handoff. Unsaved batch drafts last for the current session only. Ready groups stay separate when preparing runs. History → Runs shows single/batch classification and recorded stop details. Legacy runs infer type from their recorded stop count.
+
+Scheduled cards use the selected-tab green and a clock icon. Delivered asks the exact Yes/Cancel question before saving. The message composer closes with Done. Numeric/telephone input hints are set for iPhone keyboards; date inputs are constrained and left-aligned. Local address suggestions match stored addresses; a live street-search provider has not been configured.
+
+Nine domain tests pass, including sample record links, day-of-week/date boundaries, run types, and timing. Browser checks cover two-stop batch creation, scheduled selection, cancel-without-completion, Yes completion, Done, and populated annual reports. Actual iPhone keyboard/layout checks remain with the user.
