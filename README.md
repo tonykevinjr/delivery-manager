@@ -42,3 +42,11 @@ New delivery entry distinguishes Single Delivery from Batch Delivery. Batch stop
 Scheduled cards use the selected-tab green and a clock icon. Delivered asks the exact Yes/Cancel question before saving. The message composer closes with Done. Numeric/telephone input hints are set for iPhone keyboards; date inputs are constrained and left-aligned. Local address suggestions match stored addresses; a live street-search provider has not been configured.
 
 Nine domain tests pass, including sample record links, day-of-week/date boundaries, run types, and timing. Browser checks cover two-stop batch creation, scheduled selection, cancel-without-completion, Yes completion, Done, and populated annual reports. Actual iPhone keyboard/layout checks remain with the user.
+
+## Release 0.4 — preparation stages and compact delivery views
+
+New tickets start Pending. Mark ready when bagged, then Start delivery/batch to save an active run before navigation. Scheduled arrival never activates a ticket automatically. All pending batch stops must be marked ready before departure. Existing ready/active/completed records retain their status; pending records are supported in backups.
+
+Deliveries sorts ongoing items newest-first above a separate completed section. Batch stops appear inside one collapsible group; a partly completed batch remains in ongoing until all stops are completed. Standard completed badges are gray, scheduled ones remain green. Ticket fields request numeric keyboards, saved-customer suggestions have stronger contrast, and the local-storage explanation appears in Settings instead of a global save-status badge. Completion and route-saved popups use Done.
+
+Reports has Scheduled and Batch detail filters, newest-first with ten items per page and Previous/Next controls. Date-range totals and CSV exports remain complete rather than paginated. Eleven automated checks passed, plus browser checks for a new pending single order, ready/start/completion transitions, batch expand/collapse and report filters/paging. iPhone keyboard/spacing appearance remains for on-device user review.
