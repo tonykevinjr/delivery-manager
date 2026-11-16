@@ -1,5 +1,5 @@
-const CACHE='delivery-manager-v0.4.5';
-const ASSETS=['./','./index.html','./style.css?v=0.4.5','./app.js?v=0.4.5','./domain.js?v=0.4.5','./demo.js?v=0.4.5','./storage.js?v=0.4.5','./updates.js?v=0.4.5','./icon.svg','./bag-icon-180-v2.png','./bag-icon-192-v2.png','./bag-icon-512-v2.png','./manifest.webmanifest'];
+const CACHE='delivery-manager-v0.4.6';
+const ASSETS=['./','./index.html','./style.css?v=0.4.6','./app.js?v=0.4.6','./domain.js?v=0.4.6','./demo.js?v=0.4.6','./storage.js?v=0.4.6','./updates.js?v=0.4.6','./icon.svg','./bag-icon-180-v2.png','./bag-icon-192-v2.png','./bag-icon-512-v2.png','./manifest.webmanifest'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const cache=await caches.open(CACHE);
  for(const path of ASSETS){const request=new Request(new URL(path,self.registration.scope),{cache:'reload'}),response=await fetch(request);if(!response.ok)throw Error('App download failed');await cache.put(request,response);}

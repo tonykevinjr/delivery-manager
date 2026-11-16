@@ -94,3 +94,11 @@ Route handoff now fully qualifies Seattle addresses with United States and perce
 Settings includes backup-first Home Screen icon refresh guidance: save a full backup in Files; add the current Safari page as another Home Screen web app while retaining the old icon; verify the new icon and records, restoring the backup if the new app has empty storage. Do not clear Safari website data, and do not delete the old app before backup/restoration is verified. iOS owns existing installed icon refresh.
 
 Twenty-one tests pass, including duplicate restaurant waypoint elimination and address corrections at every stage. Browser verified editing a completed batch address preserved completion time/status and remaining-route review excluded that completed stop. Apple Maps route resolution and existing Home Screen icon remain on-device validation.
+
+## Release 0.4.6 — single reports and mileage consistency
+
+Report detail tabs are Scheduled, Single, Batch. Single filters saved single runs, including legacy one-stop runs without a kind field, within the selected shift date range; pagination remains ten per page.
+
+End-shift save now rejects changed odometer mileage when the shift has zero completed deliveries. Canceled/pending/ready orders and completed deliveries from other shifts do not satisfy the check. Unchanged odometer with zero deliveries remains valid. Both start and end readings can be corrected in the end dialog; start changes are audited. History edits use the same guard, with no overwrite of existing records on upgrade. This is the user's requested consistency rule, not an assertion that all real-world driving requires a delivery.
+
+Twenty-three tests passed, including zero-delivery mileage guard and Single/legacy run filtering. Browser verified tab order, Single records and pagination. Saved state remains unchanged on validation failure.
