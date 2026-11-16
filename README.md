@@ -72,3 +72,15 @@ Delivery choices are Single Delivery and Batch Delivery (dark green), followed b
 Single orders, batch stops and appended orders capture Drinks or Ice Cream? Yes/No. Flagged orders must confirm inclusion through a required checkbox before the customer message composer is shown. Both Delivered and Message go through this gate; confirmation is timestamped locally, and Undo clears it. No actual SMS is sent by the app. Updating an order's cold-item flag invalidates its previous confirmation.
 
 History correction reasons are required and trimmed, including rejection of whitespace-only text. Cancel stays an ordinary button and does not validate or persist the form. Seventeen automated tests pass. Browser verified option order/enabled state, cold-item gate rejecting unchecked confirmation, unlocking message preparation after checking, rejecting whitespace correction reason, and canceling back to unchanged History.
+
+## Release 0.4.4 — custom cold-item notes and Maps start location
+
+Redrew the Settings cog as a symmetric eight-tooth vector. Selecting Yes for Drinks or Ice Cream reveals a required item-details field; notes persist per delivery and appear escaped, with line breaks, in the required confirmation. Editing item notes invalidates any prior confirmation.
+
+Batch Maps URLs now omit the explicit restaurant source so Maps uses current location, with driving mode, ordered waypoints and the restaurant return unchanged. The earlier explicit source may have caused Steps/preview behavior; this is a hypothesis requiring target-device testing. Added a clearly labeled first-stop-only fallback; it is not the complete batch route. Apple documentation: https://developer.apple.com/documentation/mapkit/unified-map-urls
+
+Home Screen PNGs have new filenames and both apple-touch-icon and manifest reference them. Existing installed iOS icons may remain cached; do not delete the installed app or clear its records to force an icon refresh. Back up before any manual reinstallation. This release does not claim to control iOS Home Screen icon refresh.
+
+Sample-only migration seeds five completed deliveries and three returned runs into the current sample shift exactly once, creating a current shift if none exists. Existing sample entries and historical records are preserved, real records are untouched. Shift cards still represent current-shift activity, not lifetime totals.
+
+Nineteen tests passed. Browser verified conditional notes, verbatim multiline reminder, symmetrical cog appearance, and nonzero sample Shift counters. Maps Go/Steps and Home Screen icon changes still require iPhone verification.

@@ -16,3 +16,11 @@ export function createDemoData(anchor=new Date()){
  }
  return data;
 }
+export function ensureDemoCurrentShift(data,anchor=new Date()){
+ if(data.demoCurrentSeedVersion)return false;
+ let shift=data.shifts.find(s=>s.status==='active');
+ if(!shift){const previous=data.shifts.filter(s=>s.status==='finalized').sort((a,b)=>Date.parse(b.endedAt)-Date.parse(a.endedAt))[0];shift={id:'demo-current-shift',status:'active',startedAt:new Date(+anchor-3*3600000).toISOString(),startOdometer:+((previous?.endOdometer||52000)+12).toFixed(1),rate:.73,timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone,demo:true};data.shifts.push(shift);}
+ const start=Date.parse(shift.startedAt),span=Math.max(0,+anchor-start),at=f=>new Date(start+span*f).toISOString();
+ for(let r=0;r<3;r++){const count=r===1?3:1,batchId=count>1?'demo-preview-batch':null,ids=[];for(let j=0;j<count;j++){const id=`demo-preview-delivery-${r}-${j}`;ids.push(id);data.deliveries.push({id,shiftId:shift.id,customerId:null,name:`Sample completed ${r+1}.${j+1}`,address:`${600+r*10+j} Example Street`,phone:'',ticket:String(900+r*10+j),status:'delivered',enteredAt:at(.01),completedAt:at(.12+r*.22+j*.025),scheduledAt:r===1&&j===0?at(.35):null,deliveryMode:batchId?'batch':'single',batchId,demo:true});}data.runs.push({id:`demo-preview-run-${r}`,shiftId:shift.id,deliveryIds:ids,kind:batchId?'batch':'single',batchId,status:'returned',startedAt:at(.06+r*.22),returnedAt:at(.21+r*.22),estimateStatus:'unavailable',demo:true});}
+ data.demoCurrentSeedVersion=1;return true;
+}
