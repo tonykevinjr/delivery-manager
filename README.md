@@ -110,3 +110,13 @@ New orders require explicit Yes/No for Drinks or Ice Cream and Alcohol, with nei
 Customer placeholder is now Enter customer name. Twenty-four automated tests pass. Browser verified save blocked for unanswered questions and the alcohol reminder persisted on the saved order.
 
 Multiple drivers can use the same hosted URL on separate phones: IndexedDB, settings, customer records and backups are local per browser/device, without app accounts or automatic cross-device dispatch/sync. A separate repository is not needed for independent records; no Charlotte repository or shared database was created.
+
+## Release 0.4.8 — History spacing and two-step shift deletion
+
+A delivery is one customer's order. A run is one departure from and return to the restaurant, containing a single delivery or a batch. History now explains this distinction.
+
+Run-detail Edit address is a borderless block above the delivery timestamp with ten pixels of separation. A restrained green focus outline remains for keyboard accessibility instead of the previous brown one.
+
+History → Edit → Delete shift opens two separate confirmation dialogs, each naming the shift and allowing Cancel. Delete is an ordinary button independent of correction-reason validation. The second confirmation alone performs transactional deletion of the completed shift, its delivery and run records, and related audit snapshots. Saved customers and all other shifts remain. A minimal deletion event records the deleted ID/time without retaining the removed snapshots. Reports and exports derive from remaining records. Active/missing shifts cannot be deleted by this function. Existing backups are unchanged, and there is no in-app undo; backup restoration is the recovery path.
+
+Twenty-six automated tests passed. Browser checked first-warning cancel, second-warning cancel, unchanged History row count, and measured Edit address as zero border with a ten-pixel gap above timestamp. No browser records were deleted while testing; cascade deletion was verified with synthetic unit-test state.
