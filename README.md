@@ -64,3 +64,11 @@ Delete all saved customers uses an explicit irreversible confirmation, redacts l
 End Shift now allows completed open runs, clearly states that saving confirms the return trip, and closes those runs at the shift end timestamp. Unfinished stops and incomplete run references still block finalization. No automatic return timestamp is inferred from the last drop-off. Report dates use bounded native-input wrappers to prevent iOS intrinsic sizing from exceeding their container. Browser measurements show equal field boundaries; actual iPhone rendering remains user verification.
 
 Fifteen tests pass, including end-shift state, append membership and privacy deletion. Browser checked both Add to batch entry points, saved appended stop, Delete all confirmation/cancel (no contacts deleted), and date wrapper bounds.
+
+## Release 0.4.3 — delivery choice styling, new bag icon, and cold-item checks
+
+Delivery choices are Single Delivery and Batch Delivery (dark green), followed by Add to Existing Batch (gray). New batches can be prepared while another exists, but only one run can depart at a time. If several unfinished batches exist, Add to Existing Batch asks which one to use. The vector bag redraw follows the user's original side gusset and two-handle sketch; the original PNG is not included in the repository.
+
+Single orders, batch stops and appended orders capture Drinks or Ice Cream? Yes/No. Flagged orders must confirm inclusion through a required checkbox before the customer message composer is shown. Both Delivered and Message go through this gate; confirmation is timestamped locally, and Undo clears it. No actual SMS is sent by the app. Updating an order's cold-item flag invalidates its previous confirmation.
+
+History correction reasons are required and trimmed, including rejection of whitespace-only text. Cancel stays an ordinary button and does not validate or persist the form. Seventeen automated tests pass. Browser verified option order/enabled state, cold-item gate rejecting unchecked confirmation, unlocking message preparation after checking, rejecting whitespace correction reason, and canceling back to unchanged History.
