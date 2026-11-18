@@ -1,9 +1,9 @@
-import {scanTicket} from './scan.js?v=0.5.0';
-import {applySettingsDefaults,DEFAULT_SETTINGS} from './config.js?v=0.5.0';
-import {VERSION,checkForUpdates,reloadLatest,registerUpdates} from './updates.js?v=0.5.0';
-import {createDemoData,ensureDemoCurrentShift} from './demo.js?v=0.5.0';
-import {openDB,read,save} from './storage.js?v=0.5.0';
-import {miles,reimbursement,mikeReport,mapsURL,csvCell,validateBackup,validateOdometers,CUSTOMER_MESSAGE,seattleAddress,scheduledInstant,scheduledStats,periodRange,paginate,shiftEndState,purgeCustomers,appendBatchOrder,correctionReason,needsColdItemConfirmation,navigationAddress,changeDeliveryAddress,validateShiftMileage,runsByKind,requiredYesNo,deleteFinalizedShift,deleteFinalizedShifts,prioritizeOngoing,reportDateRange,completeRuns,formatPhone,addressKey,reminderDue,TASK_GROUPS,taskLabels} from './domain.js?v=0.5.0';
+import {scanTicket} from './scan.js?v=0.5.1';
+import {applySettingsDefaults,DEFAULT_SETTINGS} from './config.js?v=0.5.1';
+import {VERSION,checkForUpdates,reloadLatest,registerUpdates} from './updates.js?v=0.5.1';
+import {createDemoData,ensureDemoCurrentShift} from './demo.js?v=0.5.1';
+import {openDB,read,save} from './storage.js?v=0.5.1';
+import {miles,reimbursement,mikeReport,mapsURL,csvCell,validateBackup,validateOdometers,CUSTOMER_MESSAGE,seattleAddress,scheduledInstant,scheduledStats,periodRange,paginate,shiftEndState,purgeCustomers,appendBatchOrder,correctionReason,needsColdItemConfirmation,navigationAddress,changeDeliveryAddress,validateShiftMileage,runsByKind,requiredYesNo,deleteFinalizedShift,deleteFinalizedShifts,prioritizeOngoing,reportDateRange,completeRuns,formatPhone,addressKey,reminderDue,TASK_GROUPS,taskLabels} from './domain.js?v=0.5.1';
 const demoMode=new URLSearchParams(location.search).get('demo')==='1';
 let batchDraft=null,detailFilter='scheduled',detailPage=0;const expandedBatches=new Set(),selectedShifts=new Set(),expandedCompleted=new Set();
 let state,tab='shift',busy=false,range=periodRange('weekly'),reportView='weekly',settingsEditing=false;

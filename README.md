@@ -152,3 +152,8 @@ Thirty-three tests pass, including new/old sample settings and custom-value pres
 - Customer names and numbers remain stored as agreed. No customer deletion migration. New tasks/address warnings remain in JSON backups.
 
 Validation: 38 automated checks, single-start/complete flow, reminder snooze, task child expansion/save, and 390px layout verified in local browser. Supplied real ticket tested locally without saving its customer details to test records or repository; initial recognition required focused retry and text cleanup. Camera and Apple Maps behavior require physical iPhone testing.
+
+
+## Version 0.5.1
+
+Added expandable Big Rock Ice Cubes tasks: New cubes put in the freezer; Completed cubes removed and stored. Checked children use the existing shift task storage and Mike report formatting.
