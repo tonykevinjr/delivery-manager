@@ -157,3 +157,16 @@ Validation: 38 automated checks, single-start/complete flow, reminder snooze, ta
 ## Version 0.5.1
 
 Added expandable Big Rock Ice Cubes tasks: New cubes put in the freezer; Completed cubes removed and stored. Checked children use the existing shift task storage and Mike report formatting.
+
+
+## Version 0.6.0 — optional free lock-screen reminders
+
+Settings now offers opt-in device notifications and a test button. Cloudflare Workers + D1 (confirmed Free plan) run separately from the GitHub Pages app and the existing blog service. No paid products enabled.
+
+The app sends only a push subscription and active shift start/snooze timestamps; it never sends names, phone numbers, addresses, ticket images, odometers, rates, or reports. Notification tokens stay in this browser’s localStorage, outside JSON backups. Sample mode never registers or schedules. Driver setup code and VAPID private signing key live in Cloudflare secrets and ignored `notifications/setup.private.json`, not the public repository.
+
+At start or when enabling during a shift, schedule Seattle cutoff +30 minutes (Sun–Thu 21:00, Fri–Sat 21:30). Ending a shift cancels; snoozing replaces the schedule. Offline changes persist for retry on launch/foreground/online. Old revisions cannot undo newer cancellation. Service checks each minute, retries transient push failures, expires overdue jobs after 2 hours, removes expired endpoints, and prunes inactive connections after 90 days. Delivery can be delayed by internet, iOS Focus settings, and provider availability. No guaranteed alarm behavior.
+
+On iPhone open the Home Screen installation, Settings → Enable lock-screen reminders, enter Tony’s private driver setup code, and allow notifications. Send a test notification. Each phone enrolls separately, no shared orders or app login. Restoring a backup onto a new installation requires enabling notifications again.
+
+Verification: 39 app tests plus 5 service tests (DST cutoff, enrollment/auth/origin/endpoint validation, schedule/cancel revisions, retries/expiry and encrypted modern Web Push); local notification Settings UI reviewed. Live Cloudflare health/configuration, synthetic schedule/cancel and stale-revision checks passed, and the temporary test connection was removed. Physical iPhone lock-screen delivery remains for driver validation after enrollment.

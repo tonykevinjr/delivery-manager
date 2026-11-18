@@ -3,3 +3,7 @@ node_modules/
 work/
 *backup*.json
 *.csv
+
+.wrangler/
+.dev.vars*
+notifications/*.private.json

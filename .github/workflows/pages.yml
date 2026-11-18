@@ -24,6 +24,8 @@ jobs:
         with:
           node-version: '22'
       - run: npm test
+      - run: npm ci --prefix notifications --ignore-scripts
+      - run: npm test --prefix notifications
       - run: node --check dist/app.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

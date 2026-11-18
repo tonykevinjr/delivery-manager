@@ -1,5 +1,5 @@
-const CACHE='delivery-manager-v0.5.1';
-const ASSETS=['./','./index.html','./style.css?v=0.5.1','./app.js?v=0.5.1','./domain.js?v=0.5.1','./demo.js?v=0.5.1','./storage.js?v=0.5.1','./updates.js?v=0.5.1','./config.js?v=0.5.1','./icon.svg','./bag-icon-180-v2.png','./bag-icon-192-v2.png','./bag-icon-512-v2.png','./manifest.webmanifest','./scan.js?v=0.5.1'];
+const CACHE='delivery-manager-v0.6.0';
+const ASSETS=['./','./index.html','./style.css?v=0.6.0','./app.js?v=0.6.0','./domain.js?v=0.6.0','./demo.js?v=0.6.0','./storage.js?v=0.6.0','./updates.js?v=0.6.0','./config.js?v=0.6.0','./icon.svg','./bag-icon-180-v2.png','./bag-icon-192-v2.png','./bag-icon-512-v2.png','./manifest.webmanifest','./scan.js?v=0.6.0','./push.js?v=0.6.0'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const cache=await caches.open(CACHE);
  for(const path of ASSETS){const request=new Request(new URL(path,self.registration.scope),{cache:'reload'}),response=await fetch(request);if(!response.ok)throw Error('App download failed');await cache.put(request,response);}
@@ -21,3 +21,19 @@ self.addEventListener('fetch',event=>{
   const previous=await caches.match(request);return previous||Response.error();
  })());
 });
+
+self.addEventListener('push',event=>event.waitUntil((async()=>{
+ let test=false;try{test=event.data?.json()?.test===true;}catch{}
+ await self.registration.showNotification(test?'Delivery Manager test':'Remember to finish your shift',{
+  body:test?'Lock-screen reminders are connected.':'Record your ending mileage and prepare Mike’s report. Still working? Open the app to snooze.',
+  icon:new URL('bag-icon-192-v2.png',self.registration.scope).href,
+  badge:new URL('bag-icon-192-v2.png',self.registration.scope).href,
+  tag:test?'delivery-manager-test':'delivery-manager-eos',
+  data:{url:new URL('?notification=eos',self.registration.scope).href}
+ });
+})()));
+self.addEventListener('notificationclick',event=>{event.notification.close();event.waitUntil((async()=>{
+ const windows=await self.clients.matchAll({type:'window',includeUncontrolled:true});
+ for(const client of windows)if(client.url.startsWith(self.registration.scope)){await client.focus();client.postMessage({type:'open-eos'});return;}
+ await self.clients.openWindow(new URL('?notification=eos',self.registration.scope).href);
+})());});

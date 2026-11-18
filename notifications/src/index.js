@@ -1,0 +1,61 @@
+import {buildPushPayload} from '@block65/webcrypto-web-push';
+import {desiredReminder,safeSubscription} from './schedule.js';
+const APP='https://tonykevinjr.github.io/delivery-manager/';
+const hash=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value))),b=>b.toString(16).padStart(2,'0')).join('');
+const json=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
+export async function sendPush(row,env,test=false){
+ const subscription=JSON.parse(row.subscription),payload=await buildPushPayload({data:JSON.stringify({title:test?'Delivery Manager test':'Remember to finish your shift',body:test?'Lock-screen reminders are connected.':'Record your ending mileage and prepare Mike’s report. Still working? Open the app to snooze.',url:APP+'?notification=eos',test}),options:{ttl:900}},subscription,{subject:APP,publicKey:env.VAPID_PUBLIC_KEY,privateKey:env.VAPID_PRIVATE_KEY});
+ const response=await fetch(subscription.endpoint,{...payload,redirect:'error',signal:AbortSignal.timeout(15000)});return response.status;
+}
+export async function scheduled(env,at=Date.now(),sender=sendPush){
+ // The tiny Free-plan service has a hard 10-device enrollment cap and sends at most 3 per minute.
+ await env.DB.prepare('DELETE FROM devices WHERE updated_at < ?').bind(at-90*86400000).run();
+ await env.DB.prepare('UPDATE devices SET due_at=NULL WHERE expires_at < ?').bind(at).run();
+ const {results}=await env.DB.prepare('SELECT * FROM devices WHERE due_at <= ? AND expires_at >= ? ORDER BY due_at LIMIT 3').bind(at,at).all();
+ for(const row of results){
+  // Claim only this revision; cancellations/new schedules invalidate a stale queued send.
+  const claim=await env.DB.prepare('UPDATE devices SET due_at=? WHERE id=? AND revision=? AND due_at=?').bind(at+120000,row.id,row.revision,row.due_at).run();if(!claim.meta.changes)continue;
+  const fresh=await env.DB.prepare('SELECT revision,due_at FROM devices WHERE id=?').bind(row.id).first();if(!fresh||fresh.revision!==row.revision||fresh.due_at!==at+120000)continue;
+  let status;try{status=await sender(row,env);}catch{status=503;}
+  if(status===404||status===410){await env.DB.prepare('DELETE FROM devices WHERE id=? AND revision=?').bind(row.id,row.revision).run();continue;}
+  if(status>=200&&status<300||row.attempts>=4){await env.DB.prepare('UPDATE devices SET due_at=NULL,attempts=0 WHERE id=? AND revision=?').bind(row.id,row.revision).run();}
+  else await env.DB.prepare('UPDATE devices SET due_at=?,attempts=attempts+1 WHERE id=? AND revision=?').bind(at+Math.min(15,2**row.attempts)*60000,row.id,row.revision).run();
+ }
+}
+export async function route(request,env){
+ const url=new URL(request.url),origin=request.headers.get('Origin'),origins=(env.ALLOWED_ORIGINS||'').split(',');
+ if(request.method==='GET'&&url.pathname==='/health')return json({ok:true,service:'delivery-manager-reminders',plan:'free-only'});
+ if(!origin||!origins.includes(origin))return json({error:'Origin not allowed.'},403);
+ if(request.method==='OPTIONS')return new Response(null,{status:204});
+ if(request.method==='GET'&&url.pathname==='/config')return json({publicKey:env.VAPID_PUBLIC_KEY});
+ if(request.method!=='POST')return json({error:'Not found.'},404);
+ if(request.headers.get('Content-Type')?.split(';')[0]!=='application/json')return json({error:'JSON required.'},415);
+ const raw=await request.text();if(raw.length>8192)return json({error:'Request too large.'},413);
+ const body=JSON.parse(raw),at=Date.now();
+ if(url.pathname==='/register'){
+  const code=String(body.code||'').replaceAll('-','').trim();if(!env.ENROLLMENT_CODE||await hash(code)!==await hash(env.ENROLLMENT_CODE))return json({error:'Check the driver setup code.'},401);
+  if(!/^[a-f0-9]{64}$/.test(body.token||''))return json({error:'Invalid device token.'},400);
+  const subscription=safeSubscription(body.subscription),tokenHash=await hash(body.token),existing=await env.DB.prepare('SELECT id FROM devices WHERE token_hash=?').bind(tokenHash).first();
+  if(!existing){const count=await env.DB.prepare('SELECT count(*) AS n FROM devices').first();if(count.n>=10)return json({error:'Device limit reached. Ask Tony for help.'},429);}
+  await env.DB.prepare('INSERT INTO devices(id,token_hash,subscription,updated_at) VALUES(?,?,?,?) ON CONFLICT(token_hash) DO UPDATE SET subscription=excluded.subscription,updated_at=excluded.updated_at').bind(existing?.id||crypto.randomUUID(),tokenHash,JSON.stringify(subscription),at).run();return json({ok:true});
+ }
+ const token=request.headers.get('Authorization')?.replace(/^Bearer /,'');if(!/^[a-f0-9]{64}$/.test(token||''))return json({error:'Enable notifications again in Settings.'},401);
+ const row=await env.DB.prepare('SELECT * FROM devices WHERE token_hash=?').bind(await hash(token)).first();if(!row)return json({error:'Enable notifications again in Settings.'},401);
+ if(url.pathname==='/disable'){await env.DB.prepare('DELETE FROM devices WHERE id=?').bind(row.id).run();return json({ok:true});}
+ if(url.pathname==='/schedule'){
+  if(!Number.isSafeInteger(body.revision)||body.revision<1)return json({error:'Invalid schedule revision.'},400);
+  if(body.revision<=row.revision)return json({ok:true,stale:true});
+  const due=desiredReminder(body,at);await env.DB.prepare('UPDATE devices SET revision=?,due_at=?,expires_at=?,attempts=0,updated_at=? WHERE id=? AND revision<?').bind(body.revision,due,due?due+2*3600000:null,at,row.id,body.revision).run();return json({ok:true,dueAt:due});
+ }
+ if(url.pathname==='/test'){
+  if(at-row.last_test<60000)return json({error:'Wait one minute before sending another test.'},429);
+  await env.DB.prepare('UPDATE devices SET last_test=? WHERE id=?').bind(at,row.id).run();const status=await sendPush(row,env,true);
+  if(status===404||status===410){await env.DB.prepare('DELETE FROM devices WHERE id=?').bind(row.id).run();return json({error:'This notification connection expired. Disable and enable notifications again.'},410);}
+  return status>=200&&status<300?json({ok:true}):json({error:'The phone’s notification service did not accept the test. Try again later.'},502);
+ }
+ return json({error:'Not found.'},404);
+}
+export default {
+ async fetch(request,env){const origin=request.headers.get('Origin'),allowed=(env.ALLOWED_ORIGINS||'').split(',').includes(origin);let response;try{response=await route(request,env);}catch{response=json({error:'Could not process the reminder request. Check the connection and try again.'},400);}const headers=new Headers(response.headers);if(allowed){headers.set('Access-Control-Allow-Origin',origin);headers.set('Access-Control-Allow-Methods','GET,POST,OPTIONS');headers.set('Access-Control-Allow-Headers','Content-Type,Authorization');headers.set('Vary','Origin');}return new Response(response.body,{status:response.status,headers});},
+ async scheduled(event,env,ctx){ctx.waitUntil(scheduled(env,event.scheduledTime));}
+};

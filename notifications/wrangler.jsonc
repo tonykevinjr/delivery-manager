@@ -1,0 +1,26 @@
+{
+  "name": "delivery-manager-reminders",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-17",
+  "workers_dev": true,
+  "preview_urls": false,
+  "triggers": {
+    "crons": [
+      "* * * * *"
+    ]
+  },
+  "observability": {
+    "enabled": false
+  },
+  "vars": {
+    "ALLOWED_ORIGINS": "https://tonykevinjr.github.io,http://localhost:5173,http://127.0.0.1:5173"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "delivery-manager-reminders",
+      "database_id": "8da6f4bc-54c9-409a-903d-6c2a625a44b9"
+    }
+  ],
+  "account_id": "c2dfab0e27570d5d1fb74365fd8e12e6"
+}
