@@ -1,5 +1,5 @@
-const CACHE='delivery-manager-v0.6.1';
-const ASSETS=['./','./index.html','./style.css?v=0.6.1','./app.js?v=0.6.1','./domain.js?v=0.6.1','./demo.js?v=0.6.1','./storage.js?v=0.6.1','./updates.js?v=0.6.1','./config.js?v=0.6.1','./icon.svg','./bag-icon-180-v2.png','./bag-icon-192-v2.png','./bag-icon-512-v2.png','./manifest.webmanifest','./scan.js?v=0.6.1','./push.js?v=0.6.1'];
+const CACHE='delivery-manager-v0.7.0';
+const ASSETS=['./','./index.html','./style.css?v=0.7.0','./app.js?v=0.7.0','./domain.js?v=0.7.0','./demo.js?v=0.7.0','./storage.js?v=0.7.0','./updates.js?v=0.7.0','./config.js?v=0.7.0','./icon.svg','./bag-icon-180-v2.png','./bag-icon-192-v2.png','./bag-icon-512-v2.png','./manifest.webmanifest','./scan.js?v=0.7.0','./push.js?v=0.7.0','./analytics.js?v=0.7.0','./report-charts.js?v=0.7.0'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const cache=await caches.open(CACHE);
  for(const path of ASSETS){const request=new Request(new URL(path,self.registration.scope),{cache:'reload'}),response=await fetch(request);if(!response.ok)throw Error('App download failed');await cache.put(request,response);}

@@ -1,4 +1,4 @@
-import {DEFAULT_SETTINGS} from './config.js?v=0.6.1';
+import {DEFAULT_SETTINGS} from './config.js?v=0.7.0';
 // Synthetic records only. Stored in a separate IndexedDB database.
 export function createDemoData(anchor=new Date()){
  const data={settings:{...DEFAULT_SETTINGS,rate:.73},shifts:[],deliveries:[],runs:[],customers:[],audit:[],demoSeedVersion:1};
@@ -15,7 +15,7 @@ export function createDemoData(anchor=new Date()){
   }
   odo+=distance+4+index%12;index++;
  }
- return data;
+ ensureDemoAnalytics(data);return data;
 }
 export function ensureDemoCurrentShift(data,anchor=new Date()){
  if(data.demoCurrentSeedVersion)return false;
@@ -24,4 +24,19 @@ export function ensureDemoCurrentShift(data,anchor=new Date()){
  const start=Date.parse(shift.startedAt),span=Math.max(0,+anchor-start),at=f=>new Date(start+span*f).toISOString();
  for(let r=0;r<3;r++){const count=r===1?3:1,batchId=count>1?'demo-preview-batch':null,ids=[];for(let j=0;j<count;j++){const id=`demo-preview-delivery-${r}-${j}`;ids.push(id);data.deliveries.push({id,shiftId:shift.id,customerId:null,name:`Sample completed ${r+1}.${j+1}`,address:`${600+r*10+j} Example Street`,phone:'',ticket:String(900+r*10+j),status:'delivered',enteredAt:at(.01),completedAt:at(.12+r*.22+j*.025),scheduledAt:r===1&&j===0?at(.35):null,deliveryMode:batchId?'batch':'single',batchId,demo:true});}data.runs.push({id:`demo-preview-run-${r}`,shiftId:shift.id,deliveryIds:ids,kind:batchId?'batch':'single',batchId,status:'returned',startedAt:at(.06+r*.22),returnedAt:at(.21+r*.22),estimateStatus:'unavailable',demo:true});}
  data.demoCurrentSeedVersion=1;return true;
+}
+
+// Enrich only explicitly fictional completed shifts; never fill gaps in real records.
+export function ensureDemoAnalytics(data){
+ if(!data.demoSeedVersion||data.demoAnalyticsSeedVersion>=2)return false;
+ const leaves=['patio','icecream','bigrock:New cubes put in the freezer','bigrock:Completed cubes removed and stored','juice:Lime','juice:Lemon','juice:Grapefruit','juice:Pineapple','fruit:Lemons','fruit:Grapefruit','fruit:Oranges','syrup:Simple syrup','syrup:Old fashioned syrup'];
+ data.shifts.filter(s=>s.demo&&s.status==='finalized').forEach((shift,i)=>{
+  for(const [r,run] of data.runs.filter(r=>r.demo&&r.shiftId===shift.id).entries()){const done=run.deliveryIds.map(id=>data.deliveries.find(d=>d.id===id)?.completedAt).filter(Boolean).map(Date.parse);if(done.length)run.startedAt=new Date(Math.min(...done)-(8+(i*7+r*3)%22)*60000).toISOString();}
+  const ds=data.deliveries.filter(d=>d.demo&&d.shiftId===shift.id);
+  ds.forEach((d,j)=>{const run=data.runs.find(r=>r.demo&&r.shiftId===shift.id&&r.deliveryIds.includes(d.id));if(!run)return;d.departedAt=run.startedAt;d.readyAt=new Date(Date.parse(run.startedAt)-(i+j)%6*60000).toISOString();d.enteredAt=new Date(Math.min(Date.parse(d.enteredAt),Date.parse(d.readyAt)-(8+(i+j)%17)*60000)).toISOString();});
+  const tasks={},times={},start=Date.parse(shift.startedAt),span=Date.parse(shift.endedAt)-start;
+  leaves.forEach((key,j)=>{if((i*3+j)%5<2){tasks[key]=true;if(key.includes(':'))tasks[key.split(':')[0]]=true;times[key]=new Date(start+span*(.12+j*.045)).toISOString();}});
+  if(i%7===0){tasks.special='Sample special task: restocked bar supplies';times.special=new Date(start+span*.85).toISOString();}
+  shift.tasks=tasks;shift.taskCompletedAt=times;
+ });data.demoAnalyticsSeedVersion=2;return true;
 }
