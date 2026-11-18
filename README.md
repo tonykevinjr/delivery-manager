@@ -170,3 +170,10 @@ At start or when enabling during a shift, schedule Seattle cutoff +30 minutes (S
 On iPhone open the Home Screen installation, Settings → Enable lock-screen reminders, enter Tony’s private driver setup code, and allow notifications. Send a test notification. Each phone enrolls separately, no shared orders or app login. Restoring a backup onto a new installation requires enabling notifications again.
 
 Verification: 39 app tests plus 5 service tests (DST cutoff, enrollment/auth/origin/endpoint validation, schedule/cancel revisions, retries/expiry and encrypted modern Web Push); local notification Settings UI reviewed. Live Cloudflare health/configuration, synthetic schedule/cancel and stale-revision checks passed, and the temporary test connection was removed. Physical iPhone lock-screen delivery remains for driver validation after enrollment.
+
+
+## Version 0.6.1 — notification request fix
+
+Fixed a production-only Cloudflare error: its fetch implementation rejects redirect:error. Push delivery now uses redirect:manual, keeping notification credentials from following redirects while allowing the request to reach the provider. Reproduced the exact TypeError in the local Cloudflare runtime and verified a manual-redirect request reaches Apple’s server using a non-device URL. Added regression coverage for request options and test UI sending/accepted/failed states.
+
+The test notification now shows persistent inline progress/result in Settings and disables the button while sending. Existing subscriptions and signing keys are preserved; no reenrollment should be needed for this fix. Physical device acceptance/display still requires a driver test.

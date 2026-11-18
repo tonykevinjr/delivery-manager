@@ -5,7 +5,7 @@ const hash=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SH
 const json=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
 export async function sendPush(row,env,test=false){
  const subscription=JSON.parse(row.subscription),payload=await buildPushPayload({data:JSON.stringify({title:test?'Delivery Manager test':'Remember to finish your shift',body:test?'Lock-screen reminders are connected.':'Record your ending mileage and prepare Mike’s report. Still working? Open the app to snooze.',url:APP+'?notification=eos',test}),options:{ttl:900}},subscription,{subject:APP,publicKey:env.VAPID_PUBLIC_KEY,privateKey:env.VAPID_PRIVATE_KEY});
- const response=await fetch(subscription.endpoint,{...payload,redirect:'error',signal:AbortSignal.timeout(15000)});return response.status;
+ const response=await fetch(subscription.endpoint,{...payload,redirect:'manual',signal:AbortSignal.timeout(15000)});return response.status;
 }
 export async function scheduled(env,at=Date.now(),sender=sendPush){
  // The tiny Free-plan service has a hard 10-device enrollment cap and sends at most 3 per minute.
@@ -49,9 +49,9 @@ export async function route(request,env){
  }
  if(url.pathname==='/test'){
   if(at-row.last_test<60000)return json({error:'Wait one minute before sending another test.'},429);
-  await env.DB.prepare('UPDATE devices SET last_test=? WHERE id=?').bind(at,row.id).run();const status=await sendPush(row,env,true);
+  await env.DB.prepare('UPDATE devices SET last_test=? WHERE id=?').bind(at,row.id).run();let status;try{status=await sendPush(row,env,true);}catch{return json({error:'Could not contact the notification provider. Please try again shortly.'},502);}
   if(status===404||status===410){await env.DB.prepare('DELETE FROM devices WHERE id=?').bind(row.id).run();return json({error:'This notification connection expired. Disable and enable notifications again.'},410);}
-  return status>=200&&status<300?json({ok:true}):json({error:'The phone’s notification service did not accept the test. Try again later.'},502);
+  return status>=200&&status<300?json({ok:true}):json({error:`The phone’s notification service did not accept the test (status ${status}). Try again later.`},502);
  }
  return json({error:'Not found.'},404);
 }

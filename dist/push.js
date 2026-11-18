@@ -1,11 +1,11 @@
 // Notification credentials belong to this browser installation, never to portable data backups.
 const API='https://delivery-manager-reminders.tonykevinjr.workers.dev';
 const KEY='delivery-manager-push-v1';
-let config=readConfig(),chain=Promise.resolve(),lastError='';
+let config=readConfig(),chain=Promise.resolve(),lastError='',lastTest=null;
 function readConfig(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch{return null;}}
 function persist(){config?localStorage.setItem(KEY,JSON.stringify(config)):localStorage.removeItem(KEY);}
 export function notificationSupport(){if(!('serviceWorker' in navigator)||!('PushManager' in globalThis)||!('Notification' in globalThis))return 'This browser cannot receive lock-screen reminders. On iPhone, open the app from its Home Screen icon.';if(/iPad|iPhone|iPod/.test(navigator.userAgent)&&!navigator.standalone&&!matchMedia('(display-mode: standalone)').matches)return 'Add the app to your iPhone Home Screen, then open that icon to enable reminders.';return '';}
-export function notificationStatus(){const unsupported=notificationSupport();return {enabled:!!config?.enabled,permission:'Notification' in globalThis?Notification.permission:'unavailable',unsupported,error:lastError,pending:!!config?.pending,connected:!!config?.lastSyncedAt};}
+export function notificationStatus(){const unsupported=notificationSupport();return {enabled:!!config?.enabled,permission:'Notification' in globalThis?Notification.permission:'unavailable',unsupported,error:lastError,pending:!!config?.pending,connected:!!config?.lastSyncedAt,lastTest};}
 const bytes=value=>Uint8Array.from(atob(value.replaceAll('-','+').replaceAll('_','/')),c=>c.charCodeAt(0));
 async function call(path,body={},token=config?.token){const response=await fetch(API+path,{method:'POST',headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:JSON.stringify(body),keepalive:true,cache:'no-store',signal:AbortSignal.timeout(15000)});const value=await response.json();if(!response.ok)throw Error(value.error||'Reminder service unavailable.');return value;}
 export async function enableNotifications(code,state){
@@ -29,4 +29,4 @@ export function syncNotifications(state,force=false){
  return chain;
 }
 export async function disableNotifications(state){if(!config)return;config.enabled=false;config.lastSignature=null;persist();return syncNotifications(state,true);}
-export async function testNotification(){if(!config?.enabled)throw Error('Enable lock-screen reminders first.');await call('/test');}
+export async function testNotification(){lastTest={state:'sending',message:'Sending test notification…'};try{if(!config?.enabled)throw Error('Enable lock-screen reminders first.');await call('/test');lastTest={state:'accepted',message:'Your phone’s notification provider accepted the test. Check Notification Center or the Lock Screen; Focus settings can silence it.'};}catch(e){lastTest={state:'failed',message:e.message};throw e;}}
