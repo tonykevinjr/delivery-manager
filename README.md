@@ -192,3 +192,14 @@ Metrics describe observations, not driver scores: departure-to-delivery includes
 Sample mode gains deterministic fictional ready/departure/task times for explicitly synthetic finalized shifts only (analytics seed v2). Real data is never backfilled. Existing sample/manual test orders without the demo flag are untouched.
 
 Validation: 45 app tests plus 5 notification-service tests passed. Added analytics checks for missing/reversed/zero durations, legacy departure selection, finalized/date-selected isolation, early/late signs, heatmap totals, task recording, sample-only enrichment, chart privacy, finite rendering and calendar aggregation. Browser QA at 390px: 14 panels without page overflow; monthly/yearly/custom totals, interactive point readouts, shift selector, timeline and empty weekly state verified; no console errors.
+
+
+## Version 0.7.1 — explicit restaurant return
+
+After the final single/batch drop-off, the active run records completedAt and completionKind=awaiting-return. Customer completion notes, required cold-item confirmation and text composition remain usable; after Done, a branded bottom card blocks the entire app and traps keyboard focus on End Run. The shell is inert; no tab changes, adding orders or ending shifts until return confirmation. Reopening reconstructs this gate from IndexedDB. End Run writes returnedAt, closes the run and logs the confirmation. It does not end the shift. Historical auto-closed runs remain closed without invented returns. History distinguishes final drop-off from physical return.
+
+The existing free push enrollment now also schedules return reminders 10, 25 and 45 minutes after final drop-off. A separate bounded queue preserves EOS scheduling. Confirmation cancels the return queue, offline changes persist/retry on reconnection, stale revisions cannot reinstate canceled schedules, same-run resync preserves reminder progress, and jobs expire after two hours. Device permissions/Focus/connectivity still govern delivery; this is a reminder rather than location detection. No customer data is sent. Existing enrolled devices keep their credentials.
+
+Deployment: apply notifications/run-reminders-migration.sql once to the existing D1 database before deploying the updated Worker and frontend. New databases use the expanded schema.sql. No secret or subscription changes required.
+
+Validation: 48 app and 7 service tests, plus browser checks of cold-item/message completion, mobile layout, reload persistence, inaccessible underlying tabs and successful unlock. Physical iPhone return-reminder delivery still needs a field test. The separate demo cost comparison remains work in progress and is not included in this patch.

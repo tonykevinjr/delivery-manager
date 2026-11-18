@@ -21,11 +21,11 @@ export async function enableNotifications(code,state){
 }
 export function syncNotifications(state,force=false){
  if(!config)return Promise.resolve();
- const shift=state.shifts.find(s=>s.status==='active'),desired=config.enabled?{startedAt:shift?.startedAt||null,snoozeUntil:shift?.reminderAfter||null}:{disable:true},signature=JSON.stringify(desired);
+ const shift=state.shifts.find(s=>s.status==='active'),run=state.runs?.find(r=>r.shiftId===shift?.id&&r.status==='active'&&r.completionKind==='awaiting-return'),desired=config.enabled?{startedAt:shift?.startedAt||null,snoozeUntil:shift?.reminderAfter||null,runCompletedAt:run?.completedAt||null}:{disable:true},signature=JSON.stringify(desired);
  if(signature!==config.lastSignature){config.revision=Math.max(Date.now(),(config.revision||0)+1);config.pending={...desired,revision:config.revision};config.lastSignature=signature;persist();}
  if(!config.pending&&!force)return chain;
  // Serialize saves and retries; each revision prevents an old request undoing shift cancellation.
- chain=chain.catch(()=>{}).then(async()=>{if(!config?.pending)return;const payload={...config.pending},token=config.token;if(!navigator.onLine){lastError='Waiting for internet to update the lock-screen reminder.';throw Error(lastError);}try{if(payload.disable){await call('/disable',{},token);if(config?.token===token){config=null;persist();}}else{await call('/schedule',payload,token);if(config?.pending?.revision===payload.revision){delete config.pending;config.lastSyncedAt=new Date().toISOString();persist();}}lastError='';}catch(e){lastError=e.message;throw e;}});
+ chain=chain.catch(()=>{}).then(async()=>{if(!config?.pending)return;const payload={...config.pending},token=config.token;if(!navigator.onLine){lastError='Waiting for internet to update the lock-screen reminder.';throw Error(lastError);}try{if(payload.disable){await call('/disable',{},token);if(config?.token===token){config=null;persist();}}else{await call('/schedule',payload,token);await call('/run',{completedAt:payload.runCompletedAt||null,revision:payload.revision},token);if(config?.pending?.revision===payload.revision){delete config.pending;config.lastSyncedAt=new Date().toISOString();persist();}}lastError='';}catch(e){lastError=e.message;throw e;}});
  return chain;
 }
 export async function disableNotifications(state){if(!config)return;config.enabled=false;config.lastSignature=null;persist();return syncNotifications(state,true);}

@@ -17,3 +17,11 @@ export function safeSubscription(value){
  if(decode(value.keys?.p256dh).length!==65||decode(value.keys?.auth).length!==16)throw Error('Invalid notification keys.');
  return {endpoint:u.href,keys:{p256dh:value.keys.p256dh,auth:value.keys.auth}};
 }
+
+export const RUN_DELAYS=[10,25,45];
+export function runReminderAt(completedAt,now=Date.now()){
+ if(completedAt==null)return null;
+ const t=Date.parse(completedAt);
+ if(!Number.isFinite(t)||t>now+300000||t<now-2*3600000)throw Error('Run completion is outside the reminder window.');
+ return Math.max(t+RUN_DELAYS[0]*60000,now+30000);
+}

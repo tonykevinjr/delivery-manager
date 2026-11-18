@@ -1,14 +1,14 @@
 import {buildPushPayload} from '@block65/webcrypto-web-push';
-import {desiredReminder,safeSubscription} from './schedule.js';
+import {desiredReminder,safeSubscription,runReminderAt,RUN_DELAYS} from './schedule.js';
 const APP='https://tonykevinjr.github.io/delivery-manager/';
 const hash=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value))),b=>b.toString(16).padStart(2,'0')).join('');
 const json=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
 export async function sendPush(row,env,test=false){
- const subscription=JSON.parse(row.subscription),payload=await buildPushPayload({data:JSON.stringify({title:test?'Delivery Manager test':'Remember to finish your shift',body:test?'Lock-screen reminders are connected.':'Record your ending mileage and prepare Mike’s report. Still working? Open the app to snooze.',url:APP+'?notification=eos',test}),options:{ttl:900}},subscription,{subject:APP,publicKey:env.VAPID_PUBLIC_KEY,privateKey:env.VAPID_PRIVATE_KEY});
+ const subscription=JSON.parse(row.subscription),payload=await buildPushPayload({data:JSON.stringify({kind:row.runReminder?'run':'eos',title:test?'Delivery Manager test':row.runReminder?'Back at the restaurant?':'Remember to finish your shift',body:test?'Lock-screen reminders are connected.':row.runReminder?'Your deliveries are complete. When you’re back, open Delivery Manager and tap End Run.':'Record your ending mileage and prepare Mike’s report. Still working? Open the app to snooze.',url:APP+'?notification='+(row.runReminder?'run':'eos'),test}),options:{ttl:900}},subscription,{subject:APP,publicKey:env.VAPID_PUBLIC_KEY,privateKey:env.VAPID_PRIVATE_KEY});
  const response=await fetch(subscription.endpoint,{...payload,redirect:'manual',signal:AbortSignal.timeout(15000)});return response.status;
 }
 export async function scheduled(env,at=Date.now(),sender=sendPush){
- // The tiny Free-plan service has a hard 10-device enrollment cap and sends at most 3 per minute.
+ // The tiny Free-plan service has a hard 10-device enrollment cap and processes at most 3 shift and 3 return reminders per minute.
  await env.DB.prepare('DELETE FROM devices WHERE updated_at < ?').bind(at-90*86400000).run();
  await env.DB.prepare('UPDATE devices SET due_at=NULL WHERE expires_at < ?').bind(at).run();
  const {results}=await env.DB.prepare('SELECT * FROM devices WHERE due_at <= ? AND expires_at >= ? ORDER BY due_at LIMIT 3').bind(at,at).all();
@@ -21,6 +21,18 @@ export async function scheduled(env,at=Date.now(),sender=sendPush){
   if(status>=200&&status<300||row.attempts>=4){await env.DB.prepare('UPDATE devices SET due_at=NULL,attempts=0 WHERE id=? AND revision=?').bind(row.id,row.revision).run();}
   else await env.DB.prepare('UPDATE devices SET due_at=?,attempts=attempts+1 WHERE id=? AND revision=?').bind(at+Math.min(15,2**row.attempts)*60000,row.id,row.revision).run();
  }
+ // Independent queue: a return reminder must never replace the end-of-shift reminder.
+ await env.DB.prepare('UPDATE devices SET run_due_at=NULL WHERE run_completed_at < ?').bind(at-2*3600000).run();
+ const pending=await env.DB.prepare('SELECT * FROM devices WHERE run_due_at <= ? ORDER BY run_due_at LIMIT 3').bind(at).all();
+ for(const row of pending.results){
+  const claim=await env.DB.prepare('UPDATE devices SET run_due_at=? WHERE id=? AND run_revision=? AND run_due_at=?').bind(at+120000,row.id,row.run_revision,row.run_due_at).run();if(!claim.meta.changes)continue;
+  const fresh=await env.DB.prepare('SELECT run_revision,run_due_at FROM devices WHERE id=?').bind(row.id).first();if(!fresh||fresh.run_revision!==row.run_revision||fresh.run_due_at!==at+120000)continue;
+  let status;try{status=await sender({...row,runReminder:true},env);}catch{status=503;}
+  if(status===404||status===410){await env.DB.prepare('DELETE FROM devices WHERE id=? AND run_revision=?').bind(row.id,row.run_revision).run();continue;}
+  if(status>=200&&status<300){const count=row.run_count+1,next=RUN_DELAYS[count];await env.DB.prepare('UPDATE devices SET run_count=?,run_attempts=0,run_due_at=? WHERE id=? AND run_revision=?').bind(count,next?Math.max(at+60000,row.run_completed_at+next*60000):null,row.id,row.run_revision).run();}
+  else await env.DB.prepare('UPDATE devices SET run_due_at=?,run_attempts=run_attempts+1 WHERE id=? AND run_revision=?').bind(row.run_attempts>=4?null:at+Math.min(15,2**row.run_attempts)*60000,row.id,row.run_revision).run();
+ }
+
 }
 export async function route(request,env){
  const url=new URL(request.url),origin=request.headers.get('Origin'),origins=(env.ALLOWED_ORIGINS||'').split(',');
@@ -42,6 +54,15 @@ export async function route(request,env){
  const token=request.headers.get('Authorization')?.replace(/^Bearer /,'');if(!/^[a-f0-9]{64}$/.test(token||''))return json({error:'Enable notifications again in Settings.'},401);
  const row=await env.DB.prepare('SELECT * FROM devices WHERE token_hash=?').bind(await hash(token)).first();if(!row)return json({error:'Enable notifications again in Settings.'},401);
  if(url.pathname==='/disable'){await env.DB.prepare('DELETE FROM devices WHERE id=?').bind(row.id).run();return json({ok:true});}
+ if(url.pathname==='/run'){
+  if(!Number.isSafeInteger(body.revision)||body.revision<1)return json({error:'Invalid run revision.'},400);
+  if(body.revision<=row.run_revision)return json({ok:true,stale:true});
+  // An old overdue local run stays blocking in the app, but does not generate overnight pushes.
+  const expired=body.completedAt&&Date.parse(body.completedAt)<at-2*3600000;
+  const due=expired?null:runReminderAt(body.completedAt,at),completed=due?Date.parse(body.completedAt):null;
+  if(completed!==null&&completed===row.run_completed_at){await env.DB.prepare('UPDATE devices SET run_revision=?,updated_at=? WHERE id=? AND run_revision<?').bind(body.revision,at,row.id,body.revision).run();return json({ok:true,dueAt:row.run_due_at});}
+  await env.DB.prepare('UPDATE devices SET run_revision=?,run_completed_at=?,run_due_at=?,run_count=0,run_attempts=0,updated_at=? WHERE id=? AND run_revision<?').bind(body.revision,completed,due,at,row.id,body.revision).run();return json({ok:true,dueAt:due});
+ }
  if(url.pathname==='/schedule'){
   if(!Number.isSafeInteger(body.revision)||body.revision<1)return json({error:'Invalid schedule revision.'},400);
   if(body.revision<=row.revision)return json({ok:true,stale:true});
