@@ -1,5 +1,5 @@
-const CACHE='delivery-manager-v0.4.10';
-const ASSETS=['./','./index.html','./style.css?v=0.4.10','./app.js?v=0.4.10','./domain.js?v=0.4.10','./demo.js?v=0.4.10','./storage.js?v=0.4.10','./updates.js?v=0.4.10','./config.js?v=0.4.10','./icon.svg','./bag-icon-180-v2.png','./bag-icon-192-v2.png','./bag-icon-512-v2.png','./manifest.webmanifest'];
+const CACHE='delivery-manager-v0.5.0';
+const ASSETS=['./','./index.html','./style.css?v=0.5.0','./app.js?v=0.5.0','./domain.js?v=0.5.0','./demo.js?v=0.5.0','./storage.js?v=0.5.0','./updates.js?v=0.5.0','./config.js?v=0.5.0','./icon.svg','./bag-icon-180-v2.png','./bag-icon-192-v2.png','./bag-icon-512-v2.png','./manifest.webmanifest','./scan.js?v=0.5.0'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const cache=await caches.open(CACHE);
  for(const path of ASSETS){const request=new Request(new URL(path,self.registration.scope),{cache:'reload'}),response=await fetch(request);if(!response.ok)throw Error('App download failed');await cache.put(request,response);}
@@ -14,7 +14,7 @@ self.addEventListener('fetch',event=>{
  const request=event.request,url=new URL(request.url);
  if(request.method!=='GET'||url.origin!==self.location.origin||!url.pathname.startsWith(new URL(self.registration.scope).pathname))return;
  event.respondWith((async()=>{
-  try{const response=await fetch(request,{cache:'no-store'});if(response.ok)return response;}catch{}
+  try{const response=await fetch(request,{cache:'no-store'});if(response.ok){if(url.pathname.includes('/vendor/ocr/')){const cache=await caches.open(CACHE);await cache.put(request,response.clone());}return response;}}catch{}
   const cache=await caches.open(CACHE),cached=await cache.match(request);
   if(cached)return cached;
   if(request.mode==='navigate')return await cache.match(new URL('index.html',self.registration.scope));

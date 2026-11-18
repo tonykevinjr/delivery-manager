@@ -138,3 +138,17 @@ Thirty-one tests pass. Browser checked bulk warning sequence and cancel/no row l
 Fixed sample initialization and migration: both modes now display the confirmed restaurant address and Mike contact. Known sample placeholder addresses and blank/whitespace fields are replaced, while genuine custom values remain. New sample databases use the shared defaults immediately. Use restaurant defaults in read-only Essentials explicitly restores just the restaurant address and Mike number without changing reimbursement, customers or shifts. Storage's config import is versioned with the rest of the release.
 
 Thirty-three tests pass, including new/old sample settings and custom-value preservation. Browser verified Essentials shows the confirmed address, +12062508612 and the restore-defaults action.
+
+
+## Version 0.5.0 — field-test workflow update
+
+- Runs close automatically when all their deliveries are delivered/canceled, including orders appended while underway. New closure uses `completedAt`/`completionKind: last-delivery`; it never invents `returnedAt`. Existing historical return timestamps are retained. Completed older active runs are reconciled at launch.
+- Existing single/batch/build-batch entry stays; batch route controls are side by side, separated from centered +Add order. Routes end at the last delivery, with optional separate restaurant directions. Singles skip stop ordering.
+- Completed individual orders start collapsed and expand independently. Name keyboard uses word capitalization; phone precedes address and formats dashes. Optional Needs signature badge is automatic for alcohol.
+- Barking-dog notes are stored by normalized address (including unit) and shown on future delivery cards, route previews and individual Navigate confirmation. No geofencing/background location.
+- Tasks tab saves shift-specific patio, ice cream, Juice children, fruit children, syrup children and free-text special work. Only selected tasks are added to Mike’s report. End shift opens the report composer (sample mode never sends reports).
+- In-app overdue reminder: Seattle Sun–Thu 21:00, Fri–Sat 21:30, 15-minute persisted snooze. Checks on foreground and every 30 seconds while open; does not interrupt an open dialog. No lock-screen push service.
+- Scan ticket requests rear-camera capture using the native file picker; device controls flash/camera availability. Browser-local Tesseract.js 6.0.1, core 6.0.0 and English fast language data are hosted with the app; no third-party photo upload, no retained photos or OCR text. Scan fills name/phone/address/order number only, leaves item/schedule confirmations manual. Full-image recognition retries focused center-ticket recognition when key fields are missing. Review/correct every field. First scan downloads the engine; scanned assets cache for later offline use. Accuracy and camera/flash behavior need real iPhone field testing.
+- Customer names and numbers remain stored as agreed. No customer deletion migration. New tasks/address warnings remain in JSON backups.
+
+Validation: 38 automated checks, single-start/complete flow, reminder snooze, task child expansion/save, and 390px layout verified in local browser. Supplied real ticket tested locally without saving its customer details to test records or repository; initial recognition required focused retry and text cleanup. Camera and Apple Maps behavior require physical iPhone testing.
