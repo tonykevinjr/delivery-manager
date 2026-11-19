@@ -1,5 +1,5 @@
-const CACHE='delivery-manager-v0.9.0';
-const ASSETS=['./field-tools.js?v=0.9.0','./photo-tools.js?v=0.9.0','./scanner-ui.js?v=0.9.0','./business-model.js?v=0.9.0','./business-report.js?v=0.9.0','./cost-model.js?v=0.9.0','./cost-lab.js?v=0.9.0','./','./index.html','./style.css?v=0.9.0','./app.js?v=0.9.0','./domain.js?v=0.9.0','./demo.js?v=0.9.0','./storage.js?v=0.9.0','./updates.js?v=0.9.0','./config.js?v=0.9.0','./icon.svg','./bag-icon-180-v2.png','./bag-icon-192-v2.png','./bag-icon-512-v2.png','./manifest.webmanifest','./scan.js?v=0.9.0','./push.js?v=0.9.0','./analytics.js?v=0.9.0','./report-charts.js?v=0.9.0'];
+const CACHE='delivery-manager-v0.9.1';
+const ASSETS=['./field-tools.js?v=0.9.1','./photo-tools.js?v=0.9.1','./scanner-ui.js?v=0.9.1','./business-model.js?v=0.9.1','./business-report.js?v=0.9.1','./cost-model.js?v=0.9.1','./cost-lab.js?v=0.9.1','./','./index.html','./style.css?v=0.9.1','./app.js?v=0.9.1','./domain.js?v=0.9.1','./demo.js?v=0.9.1','./storage.js?v=0.9.1','./updates.js?v=0.9.1','./config.js?v=0.9.1','./icon.svg','./bag-icon-180-v2.png','./bag-icon-192-v2.png','./bag-icon-512-v2.png','./manifest.webmanifest','./scan.js?v=0.9.1','./push.js?v=0.9.1','./analytics.js?v=0.9.1','./report-charts.js?v=0.9.1'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const cache=await caches.open(CACHE);
  for(const path of ASSETS){const request=new Request(new URL(path,self.registration.scope),{cache:'reload'}),response=await fetch(request);if(!response.ok)throw Error('App download failed');await cache.put(request,response);}

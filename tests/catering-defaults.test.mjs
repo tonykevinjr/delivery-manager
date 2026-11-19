@@ -1,0 +1,4 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {applySettingsDefaults,cateringDefaults} from '../dist/config.js';
+test('catering defaults migrate once, prefill company/address with no phone, and respect edits',()=>{const s={settings:{restaurant:'custom',mike:'custom',helpPhone:'custom',contactDefaultsVersion:1}};assert.equal(applySettingsDefaults(s),true);assert.deepEqual(cateringDefaults(s.settings),{isCatering:true,name:'Lawless Forge',address:'45 S Spokane St, Seattle, WA 98134',phone:''});assert.equal(applySettingsDefaults(s),false);s.settings.cateringName='Other company';s.settings.cateringAddress='100 Example St';assert.equal(applySettingsDefaults(s),false);const d=cateringDefaults(s.settings);assert.equal(d.name,'Other company');assert.equal(d.address,'100 Example St');assert.equal(d.phone,'');assert.equal(d.id,undefined);});
