@@ -1,5 +1,5 @@
-import {formatPhone} from './domain.js?v=0.10.0';
-import {imageCanvas} from './photo-tools.js?v=0.10.0';
+import {formatPhone} from './domain.js?v=0.10.1';
+import {imageCanvas} from './photo-tools.js?v=0.10.1';
 const road=/\b(?:AVE(?:NUE)?|ST(?:REET)?|WAY|RD|ROAD|PL(?:ACE)?|DR(?:IVE)?|BLVD|BOULEVARD|CT|COURT|TER(?:RACE)?)\b/i;
 export function usableStreet(value){return /^\d{2,6}(?:[-/]\d+)?\s+[\p{L}\d]/u.test(value)&&road.test(value)&&!/[|{}<>@*=]/.test(value)&&!/(?:Phone|Print Time|Third Party)/i.test(value)&&! /\b(?:Si|Sy|Svv|Nv|NwW)\s*[,.;]?$/i.test(value);}
 export function parseTicket(text){const lines=String(text||'').split(/\r?\n/).map(s=>s.trim()).filter(Boolean),phone=String(text).match(/(?:\+?1[ .-]?)?\(?\d{3}\)?[ .-]+\d{3}[ .-]+\d{4}/),ticket=String(text).match(/\bOrder\s*#?\s*(\d+)/i);let address='',name='';const label=lines.findIndex(l=>/^Addres[s5]?\s*[:;]?/i.test(l));const candidates=label>=0?[lines[label].replace(/^Addres[s5]?\s*[:;]?\s*/i,''),...lines.slice(label+1,label+7)]:lines;const street=candidates.find(usableStreet);if(street){const clean=street.replace(/[,:;.]+$/g,'').replace(/(\d)\.(?=\s)/g,'$1'),unit=candidates.find(l=>/^(?:Apt(?:\s*\/\s*Ste)?|Suite|Ste|Unit|#)\s*[.#:\-]*\s*[\p{L}\d-]+/iu.test(l)),city=candidates.find(l=>/^Seattle\s*[,.:]?\s*WA\s*\d{5}/i.test(l));address=[clean,unit?.replace(/\s*\/\s*Ste\.?/i,'').replace(/[:#]+/g,' ').replace(/\s+/g,' ').trim(),city?('Seattle, WA '+city.match(/\d{5}(?:-\d{4})?/)?.[0]):''].filter(Boolean).join(', ');}
