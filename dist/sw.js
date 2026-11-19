@@ -1,5 +1,5 @@
-const CACHE='delivery-manager-v0.8.1';
-const ASSETS=['./business-model.js?v=0.8.1','./business-report.js?v=0.8.1','./cost-model.js?v=0.8.1','./cost-lab.js?v=0.8.1','./','./index.html','./style.css?v=0.8.1','./app.js?v=0.8.1','./domain.js?v=0.8.1','./demo.js?v=0.8.1','./storage.js?v=0.8.1','./updates.js?v=0.8.1','./config.js?v=0.8.1','./icon.svg','./bag-icon-180-v2.png','./bag-icon-192-v2.png','./bag-icon-512-v2.png','./manifest.webmanifest','./scan.js?v=0.8.1','./push.js?v=0.8.1','./analytics.js?v=0.8.1','./report-charts.js?v=0.8.1'];
+const CACHE='delivery-manager-v0.9.0';
+const ASSETS=['./field-tools.js?v=0.9.0','./photo-tools.js?v=0.9.0','./scanner-ui.js?v=0.9.0','./business-model.js?v=0.9.0','./business-report.js?v=0.9.0','./cost-model.js?v=0.9.0','./cost-lab.js?v=0.9.0','./','./index.html','./style.css?v=0.9.0','./app.js?v=0.9.0','./domain.js?v=0.9.0','./demo.js?v=0.9.0','./storage.js?v=0.9.0','./updates.js?v=0.9.0','./config.js?v=0.9.0','./icon.svg','./bag-icon-180-v2.png','./bag-icon-192-v2.png','./bag-icon-512-v2.png','./manifest.webmanifest','./scan.js?v=0.9.0','./push.js?v=0.9.0','./analytics.js?v=0.9.0','./report-charts.js?v=0.9.0'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const cache=await caches.open(CACHE);
  for(const path of ASSETS){const request=new Request(new URL(path,self.registration.scope),{cache:'reload'}),response=await fetch(request);if(!response.ok)throw Error('App download failed');await cache.put(request,response);}
@@ -14,6 +14,7 @@ self.addEventListener('fetch',event=>{
  const request=event.request,url=new URL(request.url);
  if(request.method!=='GET'||url.origin!==self.location.origin||!url.pathname.startsWith(new URL(self.registration.scope).pathname))return;
  event.respondWith((async()=>{
+  if(url.pathname.includes('/vendor/ocr/')){const cached=await caches.match(request);if(cached)return cached;}
   try{const response=await fetch(request,{cache:'no-store'});if(response.ok){if(url.pathname.includes('/vendor/ocr/')){const cache=await caches.open(CACHE);await cache.put(request,response.clone());}return response;}}catch{}
   const cache=await caches.open(CACHE),cached=await cache.match(request);
   if(cached)return cached;

@@ -1,4 +1,4 @@
-export const VERSION='0.8.1';
+export const VERSION='0.9.0';
 export async function checkForUpdates(){
  if(!navigator.onLine)throw Error('Connect to the internet to check for updates.');
  const response=await fetch(new URL(`version.json?check=${Date.now()}`,location.href),{cache:'no-store'});
