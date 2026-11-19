@@ -1,3 +1,4 @@
+import {scanRoute} from './scanner.js';
 import {buildPushPayload} from '@block65/webcrypto-web-push';
 import {desiredReminder,safeSubscription,runReminderAt,RUN_DELAYS} from './schedule.js';
 const APP='https://tonykevinjr.github.io/delivery-manager/';
@@ -41,6 +42,7 @@ export async function route(request,env){
  if(request.method==='OPTIONS')return new Response(null,{status:204});
  if(request.method==='GET'&&url.pathname==='/config')return json({publicKey:env.VAPID_PUBLIC_KEY});
  if(request.method!=='POST')return json({error:'Not found.'},404);
+ if(url.pathname.startsWith('/scan'))return scanRoute(request,env);
  if(request.headers.get('Content-Type')?.split(';')[0]!=='application/json')return json({error:'JSON required.'},415);
  const raw=await request.text();if(raw.length>8192)return json({error:'Request too large.'},413);
  const body=JSON.parse(raw),at=Date.now();

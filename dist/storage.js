@@ -1,4 +1,4 @@
-import {DEFAULT_SETTINGS} from './config.js?v=0.9.1';
+import {DEFAULT_SETTINGS} from './config.js?v=0.10.0';
 let db;
 export async function openDB(name='delivery-manager'){return new Promise((resolve,reject)=>{const r=indexedDB.open(name,1);r.onupgradeneeded=()=>r.result.createObjectStore('state');r.onsuccess=()=>{db=r.result;resolve();};r.onerror=()=>reject(r.error);});}
 export const initial=()=>({settings:{...DEFAULT_SETTINGS},shifts:[],deliveries:[],runs:[],customers:[],audit:[]});

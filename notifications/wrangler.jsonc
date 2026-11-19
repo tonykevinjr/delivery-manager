@@ -3,6 +3,7 @@
   "main": "src/index.js",
   "compatibility_date": "2026-11-17",
   "workers_dev": true,
+  "ai": {"binding":"AI"},
   "preview_urls": false,
   "triggers": {
     "crons": [
@@ -13,6 +14,7 @@
     "enabled": false
   },
   "vars": {
+    "SCAN_DAILY_LIMIT":"60",
     "ALLOWED_ORIGINS": "https://tonykevinjr.github.io,http://localhost:5173,http://127.0.0.1:5173"
   },
   "d1_databases": [

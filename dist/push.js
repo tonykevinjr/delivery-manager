@@ -32,3 +32,5 @@ export function syncNotifications(state,force=false){
 }
 export async function disableNotifications(state){if(!config)return;config.enabled=false;config.lastSignature=null;persist();return syncNotifications(state,true);}
 export async function testNotification(){lastTest={state:'sending',message:'Sending test notification…'};try{if(!config?.enabled)throw Error('Enable lock-screen reminders first.');await call('/test');lastTest={state:'accepted',message:'Your phone’s notification provider accepted the test. Check Notification Center or the Lock Screen; Focus settings can silence it.'};}catch(e){lastTest={state:'failed',message:e.message};throw e;}}
+
+export function scannerDeviceToken(){return config?.enabled?config.token:null;}
