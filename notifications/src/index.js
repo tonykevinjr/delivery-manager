@@ -1,3 +1,4 @@
+import {oilRoute,processOilReminders} from './oil.js';
 import {scanRoute} from './scanner.js';
 import {buildPushPayload} from '@block65/webcrypto-web-push';
 import {desiredReminder,safeSubscription,runReminderAt,RUN_DELAYS} from './schedule.js';
@@ -33,7 +34,7 @@ export async function scheduled(env,at=Date.now(),sender=sendPush){
   if(status>=200&&status<300){const count=row.run_count+1,next=RUN_DELAYS[count];await env.DB.prepare('UPDATE devices SET run_count=?,run_attempts=0,run_due_at=? WHERE id=? AND run_revision=?').bind(count,next?Math.max(at+60000,row.run_completed_at+next*60000):null,row.id,row.run_revision).run();}
   else await env.DB.prepare('UPDATE devices SET run_due_at=?,run_attempts=run_attempts+1 WHERE id=? AND run_revision=?').bind(row.run_attempts>=4?null:at+Math.min(15,2**row.run_attempts)*60000,row.id,row.run_revision).run();
  }
-
+ await processOilReminders(env,at);
 }
 export async function route(request,env){
  const url=new URL(request.url),origin=request.headers.get('Origin'),origins=(env.ALLOWED_ORIGINS||'').split(',');
@@ -42,6 +43,7 @@ export async function route(request,env){
  if(request.method==='OPTIONS')return new Response(null,{status:204});
  if(request.method==='GET'&&url.pathname==='/config')return json({publicKey:env.VAPID_PUBLIC_KEY});
  if(request.method!=='POST')return json({error:'Not found.'},404);
+ if(url.pathname.startsWith('/oil/'))return oilRoute(request,env);
  if(url.pathname.startsWith('/scan'))return scanRoute(request,env);
  if(request.headers.get('Content-Type')?.split(';')[0]!=='application/json')return json({error:'JSON required.'},415);
  const raw=await request.text();if(raw.length>8192)return json({error:'Request too large.'},413);
