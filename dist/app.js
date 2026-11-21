@@ -1,25 +1,25 @@
-import {dispatchConfig,createDispatchPair,pairingCode,disconnectDispatch,connectDispatchPush,dispatchCall,openDispatch,applyDispatch,dispatchSnapshot,sealDispatchView,reconcileDispatchColors} from './dispatch.js?v=0.20.1';
-import {elapsedSeconds,elapsedLabel,delayDue,DELAY_MESSAGE,calculateTips,newTipCalculator,tipCalculatorKey} from './shift-tools.js?v=0.20.1';
-import {updateOilSchedule,oilRecord,oilMileage,oilStatus,recordOilChange,recordOilMileage,oilEmailStatus,checkOilEmail,syncOilEmail} from './oil.js?v=0.20.1';
-import {batchName,ensureBatchNames,applyBatchPriorities,priorityBatchOrder,scheduledDueSoon} from './batch-priority.js?v=0.20.1';
-import {activeRunForShift,annotateFieldTest,runKind,normalizeRunKinds,detachBatchOrder,assignOrders,finishRunEarly,confirmPhotoException,deliveryNotes,directionsURL,providerName,mapProvider} from './workflow.js?v=0.20.1';
-import {loadLocations,locationFor,locationStatus,nearbyPairs,suggestedOrder} from './local-route.js?v=0.20.1';
-import {shareCateringPhotos} from './catering-share.js?v=0.20.1';
-import {cloudScanStatus,disableCloudScan,enableCloudScan} from './cloud-scan.js?v=0.20.1';
-import {doNotText,setAddressPreference,mergeOrders,moveOrderToBatch,requireCateringPhotos,alcoholReturns,detailCSVRows} from './field-tools.js?v=0.20.1';
-import {storedPhoto} from './photo-tools.js?v=0.20.1';
-import {BUSINESS_DEFAULTS,validateBusinessInputs} from './business-model.js?v=0.20.1';
-import {costLab,scenarioCSVRows} from './cost-lab.js?v=0.20.1';
-import {COST_DEFAULTS,costComparison,validateCostInputs} from './cost-model.js?v=0.20.1';
-import {visualReports} from './report-charts.js?v=0.20.1';
-import {recordPreparation,recordTasks} from './analytics.js?v=0.20.1';
-import {notificationStatus,enableNotifications,disableNotifications,syncNotifications,testNotification} from './push.js?v=0.20.1';
-import {openTicketScanner} from './scanner-ui.js?v=0.20.1';
-import {applySettingsDefaults,DEFAULT_SETTINGS,cateringDefaults} from './config.js?v=0.20.1';
-import {VERSION,checkForUpdates,reloadLatest,registerUpdates} from './updates.js?v=0.20.1';
-import {createDemoData,ensureDemoCurrentShift,ensureDemoAnalytics} from './demo.js?v=0.20.1';
-import {openDB,read,save,updateStored} from './storage.js?v=0.20.1';
-import {miles,reimbursement,mikeReport,mapsURL,csvCell,validateBackup,validateOdometers,CUSTOMER_MESSAGE,seattleAddress,scheduledInstant,scheduledStats,periodRange,paginate,shiftEndState,purgeCustomers,appendBatchOrder,correctionReason,needsColdItemConfirmation,navigationAddress,changeDeliveryAddress,validateShiftMileage,runsByKind,requiredYesNo,deleteFinalizedShift,deleteFinalizedShifts,prioritizeOngoing,reportDateRange,completeRuns,awaitingReturn,endRun,formatPhone,addressKey,reminderDue,TASK_GROUPS,taskLabels} from './domain.js?v=0.20.1';
+import {dispatchConfig,createDispatchPair,pairingCode,disconnectDispatch,connectDispatchPush,dispatchCall,openDispatch,applyDispatch,dispatchSnapshot,sealDispatchView,reconcileDispatchColors} from './dispatch.js?v=0.20.2';
+import {elapsedSeconds,elapsedLabel,delayDue,DELAY_MESSAGE,calculateTips,newTipCalculator,tipCalculatorKey} from './shift-tools.js?v=0.20.2';
+import {updateOilSchedule,oilRecord,oilMileage,oilStatus,recordOilChange,recordOilMileage,oilEmailStatus,checkOilEmail,syncOilEmail} from './oil.js?v=0.20.2';
+import {batchName,ensureBatchNames,applyBatchPriorities,priorityBatchOrder,scheduledDueSoon} from './batch-priority.js?v=0.20.2';
+import {activeRunForShift,annotateFieldTest,runKind,normalizeRunKinds,detachBatchOrder,assignOrders,finishRunEarly,confirmPhotoException,deliveryNotes,directionsURL,providerName,mapProvider} from './workflow.js?v=0.20.2';
+import {loadLocations,locationFor,locationStatus,nearbyPairs,suggestedOrder} from './local-route.js?v=0.20.2';
+import {shareCateringPhotos} from './catering-share.js?v=0.20.2';
+import {cloudScanStatus,disableCloudScan,enableCloudScan} from './cloud-scan.js?v=0.20.2';
+import {doNotText,setAddressPreference,mergeOrders,moveOrderToBatch,requireCateringPhotos,alcoholReturns,detailCSVRows} from './field-tools.js?v=0.20.2';
+import {storedPhoto} from './photo-tools.js?v=0.20.2';
+import {BUSINESS_DEFAULTS,validateBusinessInputs} from './business-model.js?v=0.20.2';
+import {costLab,scenarioCSVRows} from './cost-lab.js?v=0.20.2';
+import {COST_DEFAULTS,costComparison,validateCostInputs} from './cost-model.js?v=0.20.2';
+import {visualReports} from './report-charts.js?v=0.20.2';
+import {recordPreparation,recordTasks} from './analytics.js?v=0.20.2';
+import {notificationStatus,enableNotifications,disableNotifications,syncNotifications,testNotification} from './push.js?v=0.20.2';
+import {openTicketScanner} from './scanner-ui.js?v=0.20.2';
+import {applySettingsDefaults,DEFAULT_SETTINGS,cateringDefaults} from './config.js?v=0.20.2';
+import {VERSION,checkForUpdates,reloadLatest,registerUpdates} from './updates.js?v=0.20.2';
+import {createDemoData,ensureDemoCurrentShift,ensureDemoAnalytics} from './demo.js?v=0.20.2';
+import {openDB,read,save,updateStored} from './storage.js?v=0.20.2';
+import {miles,reimbursement,mikeReport,mapsURL,csvCell,validateBackup,validateOdometers,CUSTOMER_MESSAGE,seattleAddress,scheduledInstant,scheduledStats,periodRange,paginate,shiftEndState,purgeCustomers,appendBatchOrder,correctionReason,needsColdItemConfirmation,navigationAddress,changeDeliveryAddress,validateShiftMileage,runsByKind,requiredYesNo,deleteFinalizedShift,deleteFinalizedShifts,prioritizeOngoing,reportDateRange,completeRuns,awaitingReturn,endRun,formatPhone,addressKey,reminderDue,TASK_GROUPS,taskLabels} from './domain.js?v=0.20.2';
 const demoMode=new URLSearchParams(location.search).get('demo')==='1';
 let completedSectionOpen=false;try{completedSectionOpen=localStorage.getItem('dm-completed-section-'+(demoMode?'sample':'live'))==='open';}catch{}
 let reportPanel=demoMode&&new URLSearchParams(location.search).get('report')==='costs'?'costs':'charts',costAssumptions={...COST_DEFAULTS},businessAssumptions={...BUSINESS_DEFAULTS};
@@ -173,7 +173,7 @@ function orderTools(deliveryId){const d=state.deliveries.find(x=>x.id===delivery
 // Appearance belongs to this installation, independently of shift records and backups.
 function appearancePreference(){try{const value=localStorage.getItem('dm-appearance');return ['light','dark'].includes(value)?value:'system';}catch{return 'system';}}
 function applyAppearance(){const mode=appearancePreference(),dark=mode==='dark'||(mode==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark?'#191c1b':'#173e36');}
-function appearanceSettings(){const mode=appearancePreference();return `<section class="card appearance-card"><h2>Appearance</h2><p class="muted">Choose what feels comfortable on the road.</p><div class="appearance-options" role="group" aria-label="App appearance">${[['system','◐','Use device setting'],['light','☀','Light'],['dark','☾','Dark']].map(([value,icon,label])=>`<button type="button" data-appearance="${value}" aria-pressed="${mode===value}"><span aria-hidden="true">${icon}</span>${label}</button>`).join('')}</div><p class="muted">Use device setting follows your phone’s light or dark appearance. Saved on this device.</p></section>`;}
+function appearanceSettings(){const mode=appearancePreference();return `<section class="card appearance-card"><h2>Appearance</h2><p class="muted">Choose what feels comfortable on the road.</p><div class="appearance-options" role="group" aria-label="App appearance">${[['system','◐','Device'],['light','☀','Light'],['dark','☾','Dark']].map(([value,icon,label])=>`<button type="button" data-appearance="${value}" aria-label="${value==='system'?'Use device setting':label}" title="${value==='system'?'Follow your phone’s appearance':label}" aria-pressed="${mode===value}"><span aria-hidden="true">${icon}</span>${label}</button>`).join('')}</div><p class="muted">Use device setting follows your phone’s light or dark appearance. Saved on this device.</p></section>`;}
 document.addEventListener('click',event=>{const button=event.target.closest('[data-appearance]');if(!button)return;try{localStorage.setItem('dm-appearance',button.dataset.appearance);applyAppearance();document.querySelectorAll('[data-appearance]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));}catch{notify('Could not save appearance. Please allow storage for this app.');}});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyAppearance);
 applyAppearance();

@@ -81,7 +81,7 @@ html[data-theme=dark] :is(.card,.metric,dialog){background:#252a28;color:#e9ebe5
 html[data-theme=dark] :is(input,textarea,select){background:#1b1f1d;color:#f1f2e9;border-color:#58645c}
 html[data-theme=dark] :is(input,textarea)::placeholder{color:#99ab9d}
 html[data-theme=dark] button{background:#39443c;color:#e5eddf}
-html[data-theme=dark] :is(.primary,.delivery-next){background:#a7c7a2;color:#132d22;box-shadow:none}
+html[data-theme=dark] :is(.primary,.delivery-next){background:#526978;color:#fff;box-shadow:none}
 html[data-theme=dark] :is(a,.link){color:#c5d5ab}
 html[data-theme=dark] .outline{background:transparent;border-color:#647962;color:#dce8d6}
 html[data-theme=dark] .nav button{background:transparent;color:#a8bbaa}
@@ -110,8 +110,8 @@ html[data-theme=dark] .dispatch-purple{--dispatch-accent:#cfb0ed;--dispatch-bg:#
 html[data-theme=dark] .dispatch-yellow{--dispatch-accent:#e6ce75;--dispatch-bg:#3a3520}
 html[data-theme=dark] :is(.calculator-screen output,.calculator-trail,.calculator-currency){color:#d5e3c8}
 html[data-theme=dark] .calculator-keys button{background:#344b3b;color:#eff2e6;box-shadow:0 2px 0 #102318}
-html[data-theme=dark] .calculator-keys .calculator-operator{background:#aec8a0;color:#1c3426}
-html[data-theme=dark] .appearance-options button[aria-pressed=true]{background:#b8cc9e;color:#182f23;border-color:#b8cc9e;box-shadow:0 0 0 2px #496243}
+html[data-theme=dark] .calculator-keys .calculator-operator{background:#526978;color:#fff}
+html[data-theme=dark] .appearance-options button[aria-pressed=true]{background:#526978;color:#fff;border-color:#8299a6;box-shadow:none}
 html[data-theme=dark] .report-svg text{fill:#cad6c1}
 html[data-theme=dark] .report-svg [stroke="#e5e7dd"]{stroke:#435746}
 html[data-theme=dark] .report-svg [fill="#275947"]{fill:#91b78b}
@@ -130,7 +130,7 @@ html[data-theme=dark] .catering-tag{background:#553927;color:#f0c4a1}
 html[data-theme=dark] .catering-choice-button{background:#a76543;color:#fff}
 html[data-theme=dark] :is(.return-panel,.batch-summary){background:#2b322d;color:#e9eddf;border-color:#657758}
 html[data-theme=dark] .return-panel small{color:#bdcbb3}
-html[data-theme=dark] .return-panel #end-run{background:#b8cc9e;color:#152e20}
+html[data-theme=dark] .return-panel #end-run{background:#526978;color:#fff}
 html[data-theme=dark] .return-emblem{background:#405637}
 html[data-theme=dark] .task-bar{background:none;color:#deead1}
 html[data-theme=dark] .task-bar>div{background:#344737}
@@ -156,3 +156,14 @@ html[data-theme=dark] :is(.settings-group[open]>summary,.settings-group-body>.ca
 html[data-theme=dark] .settings-layout>.help-section{background:#2c342e;border-color:#4b584b}
 @media(max-width:650px){.settings-group>summary{padding:17px 14px;gap:11px}.settings-group-label strong{font-size:15px}.settings-group-label small{font-size:12px}.settings-symbol{width:32px;height:35px;font-size:23px}.settings-group-body{padding:4px 16px 12px}.settings-layout>.appearance-card{padding:19px 16px}.settings-layout>.help-section h2{font-size:23px}.shift-tips-card>.row{flex-wrap:wrap;gap:12px}}
 @media(prefers-reduced-motion:reduce){.settings-chevron{transition:none}}
+
+/* Compact appearance switch; slate highlights suit the charcoal driver theme. */
+.settings-layout>.appearance-card{padding:15px 16px;margin-bottom:20px}
+.settings-layout>.appearance-card h2{font-size:17px;margin-bottom:10px}
+.appearance-options{grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;padding:4px;background:#e9ece4;border-radius:12px}
+.appearance-options button{border:0;border-radius:8px;padding:7px 6px;min-height:44px;font-size:13px;gap:6px;justify-content:center}
+.appearance-options button span{font-size:18px}
+.appearance-options button[aria-pressed=true]{box-shadow:0 1px 4px #172d2426}
+html[data-theme=dark] .appearance-options{background:#1b201e}
+html[data-theme=dark] .appearance-options button{background:transparent;color:#c8d0ce}
+html[data-theme=dark] .appearance-options button[aria-pressed=true]{background:#526978;color:#fff;box-shadow:0 1px 5px #0004}

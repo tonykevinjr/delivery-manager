@@ -418,3 +418,7 @@ Validation: existing test suite, JavaScript syntax, and whitespace checks passed
 Dark surfaces now use charcoal gray with restrained green accents. Shift tips have a 24px gap above their card. Settings presents appearance directly, then five expandable groups for restaurant defaults, connections, car/routes, backups/customers, and updates/sample mode. Help stays at the bottom. Existing controls and handlers are retained; open groups survive in-session renders so editing and connection actions remain in context.
 
 Validation: existing tests, syntax and whitespace checks passed. Browser checks at 390px verified the 24px shift gap, zero horizontal overflow, light/dark layouts, defaults edit/cancel, backup control availability, unique IDs, and appearance persistence.
+
+## v0.20.2 — Slate highlights and compact appearance
+
+Replaced pastel green dark-mode primary/selected controls with slate blue-gray and white text. Appearance now uses a compact Device / Light / Dark segmented selector, retaining the full accessible device-setting label and 44px touch targets. Browser checks at 390px and 320px confirmed no overflow; syntax and whitespace checks passed.

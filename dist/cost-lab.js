@@ -1,6 +1,6 @@
-import {businessOverview} from './business-report.js?v=0.20.1';
-import {BUSINESS_DEFAULTS,businessFromCosts} from './business-model.js?v=0.20.1';
-import {costComparison,COST_DEFAULTS,COST_SOURCES,COST_RESEARCH_DATE} from './cost-model.js?v=0.20.1';
+import {businessOverview} from './business-report.js?v=0.20.2';
+import {BUSINESS_DEFAULTS,businessFromCosts} from './business-model.js?v=0.20.2';
+import {costComparison,COST_DEFAULTS,COST_SOURCES,COST_RESEARCH_DATE} from './cost-model.js?v=0.20.2';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=n=>n===null?'—':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n);
 const signed=n=>n===null?'—':`${n<0?'−':'+'}${money(Math.abs(n))}`;
