@@ -336,3 +336,11 @@ Mike's prepared EOS report now includes a completed catering-delivery count for 
 End Run behavior is unchanged: its nonmodal reminder has no expiry and persists across tabs/reopening while the run awaits restaurant return. End Run or explicitly ending the shift closes it; undoing the final delivery changes the run back to unfinished.
 
 Validation: 86 app tests and 12 reminder tests pass. New tests cover the ten-minute boundary, overdue/manual priority, retaining completed-stop order, active-run route ordering, stable alphabetic batch naming beyond Z, and shift-scoped catering counts. Browser checks used isolated fictional orders: circular selection appeared in the list, selecting orders changed the button label, the destination-only popup created Batch B without disturbing existing Batch A, the scheduled-priority question appeared, Yes retained the scheduled order first, and Customize route displayed its Scheduled tag. No messages or calls were sent.
+
+## v0.14.0 — Preparation and shift tips
+
+Unstarted orders show a live preparation timer, frozen at Mark ready with a separate ready-wait timer. All pending/ready orders, including scheduled ones, offer a preparation-delay message at 20 minutes from entry. The prompt does not send automatically, honors address do-not-text preferences and missing phone numbers, and does not interrupt scanner/other dialogs. Not now defers for the current app session; Prepare text or Dismiss records review with the order. Sample mode does not open Messages.
+
+The ticket scanner has explicit Cancel, photo-library, and native-camera choices. Its flashlight toggle appears only when the rear camera exposes torch support; native camera controls are the fallback.
+
+The Shift tab tip calculator stores per-ticket tips and server count with the shift, splits 70/15/15 in cents, and distributes server rounding pennies. History shows totals and the driver's share, with an editable Tips action. Per-shift CSV includes ticket entries, pools, and each server's share. These private amounts are excluded from Mike's SMS report. Customer retention is unchanged; automatic deletion remains paused. Manager dispatch is not implemented.

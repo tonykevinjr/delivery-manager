@@ -21,3 +21,7 @@ Settings includes a personal oil-change schedule, an editable next target, and a
 Email delivery remains disabled until a free sender is verified. Authenticated setup can prefill private starting values; personal email and initial mileage are not embedded in the public app. Each installation explicitly enables email. Only the vehicle schedule and latest odometer go to the reminder service; no customer details or shift reports are included. Failed updates retry when the app reconnects. The server deduplicates each cycle's 500-mile and due reminders, bounds retries, and caps daily sends.
 
 Deployment: apply notifications/oil-migration.sql, then deploy the Worker. Private secrets are OIL_EMAIL_TO, OIL_INITIAL_LAST, OIL_INITIAL_DUE, OIL_EMAIL_KEY and OIL_EMAIL_FROM. OIL_EMAIL_READY must remain false until the sender is verified. The email adapter supports Resend; use a verified sending subdomain without changing existing domain nameservers or mail forwarding. No paid upgrade is authorized. Mileage reminders depend on readings entered in the app; the app cannot read the car's odometer automatically.
+
+## Oil sender activated
+
+The oil sending domain is verified and the sending-only key is scoped to that domain. Sender credentials remain Cloudflare secrets. A setup test was confirmed delivered by Resend. Each real installation must still opt in under Settings; sample mode sends no oil email.
