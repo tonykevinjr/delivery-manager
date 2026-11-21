@@ -392,3 +392,9 @@ Sent batches expose Customize route only while all shared orders are unstarted a
 Suggestions reuse the existing local Seattle address index and scheduled/ticket/nearby cluster algorithm. These are straight-line location suggestions, not traffic-aware driving ETAs or a guaranteed fastest road route. Unknown locations are labeled. Apple Maps and Google Maps preferences are local to the manager device, with Google default on Android; routes use the same normalized-address URL builder as the driver app, and Google links split into groups of four stops. No restaurant return stop is appended. Viewing Maps does not start the driver’s run.
 
 QA: fictional three-stop draft, matching local locations, route suggestion, manual reorder, saved/reopened order, and Apple/Google destination/waypoint URL inspection. No Maps app was launched and no fictional order was sent. Automated tests cover authenticated reorder round-trip, exact membership checks, started-batch rejection, preservation of colors/IDs/readiness, and existing route logic.
+
+## v0.18.0 — Delivery counter visual hierarchy
+
+New & ongoing deliveries sit on a deep forest-green work surface, with cream/scheduled/dispatch-colored cards, a warm remaining-order counter, and a stronger active-run outline. Mike's addition colors and scheduled markers remain intact. Completed deliveries occupy a separate muted drawer with a count and native accessible Expand/Collapse summary. The drawer defaults closed and remembers the device's choice separately for sample/live mode, across renders, tab changes and reloads. Individual order/batch expansion still works independently.
+
+This changes presentation only. Browser QA at desktop and 390-pixel width checked expansion, collapse, persisted drawer state, expanded batch layout and no horizontal overflow. No dispatches were sent and no real records were changed.

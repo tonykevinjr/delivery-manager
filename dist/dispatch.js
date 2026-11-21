@@ -1,5 +1,5 @@
-import {cloudScanToken} from './cloud-scan.js?v=0.17.0';
-import {scannerDeviceToken} from './push.js?v=0.17.0';
+import {cloudScanToken} from './cloud-scan.js?v=0.18.0';
+import {scannerDeviceToken} from './push.js?v=0.18.0';
 const API='https://delivery-manager-reminders.tonykevinjr.workers.dev';
 const hex=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),x=>x.toString(16).padStart(2,'0')).join('');
 const b64=bytes=>btoa(String.fromCharCode(...bytes));const un64=text=>Uint8Array.from(atob(text),x=>x.charCodeAt(0));
