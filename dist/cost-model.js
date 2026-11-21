@@ -1,5 +1,5 @@
-import {dayKey,stamp} from './analytics.js?v=0.19.0';
-import {miles} from './domain.js?v=0.19.0';
+import {dayKey,stamp} from './analytics.js?v=0.20.0';
+import {miles} from './domain.js?v=0.20.0';
 export const COST_RESEARCH_DATE='2026-11-18';
 export const COST_DEFAULTS={wage:21.30,mileageRate:.73,returnMinutes:10,soloPrice:21.50,duoPrice:56,familyPrice:105,soloShare:45,duoShare:40,familyShare:15,ddRate:15,uberRate:15,uberOneShare:0,ddTablet:false,uberWeekly:0,uberSetup:0,ddDrive:8.99,uberDirect:7.99};
 export const COST_SOURCES={menu:'https://srivilaiwa.smiledining.com/',doordash:'https://merchants.doordash.com/en-us/pricing',uber:'https://merchants.ubereats.com/us/en/pricing/',uberSignup:'https://merchants.ubereats.com/us/en/s/signup/',drive:'https://merchants.doordash.com/en-us/products/drive-on-demand',wage:'https://www.seattle.gov/laborstandards/ordinances/minimum-wage',seattle:'https://www.seattle.gov/documents/Departments/FAS/RegulatoryServices/food-delivery-platforms/fas-cpd-food-delivery-platforms-cap.pdf'};

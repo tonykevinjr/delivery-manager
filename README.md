@@ -406,3 +406,9 @@ Delivery cards now have one prominent next action (Mark ready, Start delivery/ba
 On phones the stop number is positioned within the title row instead of taking a full column from the body and controls. State, dispatch colors, scheduled tags and notes remain intact. Small-screen footer icons simplify below 360 pixels to prevent labels overlapping while keeping full touch targets.
 
 QA: sample single order with phone/signature, pending→ready→Still preparing→ready via More, contact popup, address popup/cancel, map-preview dialog, and measured no horizontal/individual-footer overflow at 320 and 390 pixels. No calls, texts, external map launches or real-record changes were made.
+
+## v0.20.0 — Driver dark mode
+
+Settings → Appearance offers Use device setting (default), Light, and Dark. The installation remembers its selection separately from shift records. An early appearance check prevents a bright startup flash, and device appearance changes apply automatically in system mode. Dark forest surfaces cover driver navigation, forms, delivery controls, dispatch colors, safety tags, return reminders, calculator, and reports. The manager screen retains its existing appearance.
+
+Validation: existing test suite, JavaScript syntax, and whitespace checks passed. Phone-width browser checks covered switching Light/Dark, persistence after reload, order-entry dialogs, settings, and report charts.
