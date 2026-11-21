@@ -344,3 +344,7 @@ Unstarted orders show a live preparation timer, frozen at Mark ready with a sepa
 The ticket scanner has explicit Cancel, photo-library, and native-camera choices. Its flashlight toggle appears only when the rear camera exposes torch support; native camera controls are the fallback.
 
 The Shift tab tip calculator stores per-ticket tips and server count with the shift, splits 70/15/15 in cents, and distributes server rounding pennies. History shows totals and the driver's share, with an editable Tips action. Per-shift CSV includes ticket entries, pools, and each server's share. These private amounts are excluded from Mike's SMS report. Customer retention is unchanged; automatic deletion remains paused. Manager dispatch is not implemented.
+
+## v0.14.1 — Branded tip keypad
+
+Shift tips now use an in-app calculator instead of separate ticket fields. Tap amounts with + between tips, adjust server count with minus/plus, then Calculate tip-out. The last amount is included without pressing equals. Clear, backspace and basic arithmetic are available; arithmetic is sequential and rounded to cents. The split is saved with the shift and shown in a readable breakdown. Existing saved totals remain available. Newly calculated totals are exported as a calculator-total entry with the calculation text; they are not falsely linked to individual delivery tickets.

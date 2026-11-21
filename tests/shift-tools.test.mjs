@@ -11,3 +11,8 @@ test('per-shift export includes tip totals, ticket tips and individual server am
 
 import {mikeReport} from '../dist/domain.js';
 test('tip breakdown stays out of Mike SMS report',()=>{const shift={id:'s',startedAt:'2026-11-20T01:00:00Z',endedAt:'2026-11-20T05:00:00Z',startOdometer:100,endOdometer:110,tips:calculateTips([{amount:'123.45'}],2)};const text=mikeReport(shift,[],[]);for(const term of ['123.45','86.41','18.52','tips','server'])assert.ok(!text.toLowerCase().includes(term));});
+
+import {newTipCalculator,tipCalculatorKey} from '../dist/shift-tools.js';
+const keys=(text,initial=newTipCalculator())=>[...text].reduce((s,k)=>tipCalculatorKey(s,k),initial);
+test('calculator sums consecutive tips and includes the last amount without equals',()=>{const s=keys('12.50+7.25+10');assert.equal(tipCalculatorKey(s,'=').display,'29.75');assert.equal(keys('0.10+0.20=').display,'0.30');assert.equal(keys('10++5=').display,'15.00');});
+test('calculator handles operators, corrections, clearing and invalid division',()=>{assert.equal(keys('20−5=').display,'15.00');assert.equal(keys('2.50×3=').display,'7.50');assert.equal(keys('10÷4=').display,'2.50');assert.throws(()=>keys('10÷0='),/zero/);assert.equal(tipCalculatorKey(keys('12.53'),'back').display,'12.5');assert.equal(tipCalculatorKey(keys('12+3'),'AC').display,'0');assert.equal(keys('1.234').display,'1.23');assert.equal(keys('8',newTipCalculator('100.00')).display,'8');});
