@@ -81,7 +81,7 @@ html[data-theme=dark] :is(.card,.metric,dialog){background:#252a28;color:#e9ebe5
 html[data-theme=dark] :is(input,textarea,select){background:#1b1f1d;color:#f1f2e9;border-color:#58645c}
 html[data-theme=dark] :is(input,textarea)::placeholder{color:#99ab9d}
 html[data-theme=dark] button{background:#39443c;color:#e5eddf}
-html[data-theme=dark] :is(.primary,.delivery-next){background:#526978;color:#fff;box-shadow:none}
+html[data-theme=dark] :is(.primary,.delivery-next){background:#443b24;color:#f1dba8;box-shadow:none}
 html[data-theme=dark] :is(a,.link){color:#c5d5ab}
 html[data-theme=dark] .outline{background:transparent;border-color:#647962;color:#dce8d6}
 html[data-theme=dark] .nav button{background:transparent;color:#a8bbaa}
@@ -110,8 +110,8 @@ html[data-theme=dark] .dispatch-purple{--dispatch-accent:#cfb0ed;--dispatch-bg:#
 html[data-theme=dark] .dispatch-yellow{--dispatch-accent:#e6ce75;--dispatch-bg:#3a3520}
 html[data-theme=dark] :is(.calculator-screen output,.calculator-trail,.calculator-currency){color:#d5e3c8}
 html[data-theme=dark] .calculator-keys button{background:#344b3b;color:#eff2e6;box-shadow:0 2px 0 #102318}
-html[data-theme=dark] .calculator-keys .calculator-operator{background:#526978;color:#fff}
-html[data-theme=dark] .appearance-options button[aria-pressed=true]{background:#526978;color:#fff;border-color:#8299a6;box-shadow:none}
+html[data-theme=dark] .calculator-keys .calculator-operator{background:#443b24;color:#f1dba8}
+html[data-theme=dark] .appearance-options button[aria-pressed=true]{background:#443b24;color:#f1dba8;border-color:#8f794a;box-shadow:none}
 html[data-theme=dark] .report-svg text{fill:#cad6c1}
 html[data-theme=dark] .report-svg [stroke="#e5e7dd"]{stroke:#435746}
 html[data-theme=dark] .report-svg [fill="#275947"]{fill:#91b78b}
@@ -130,7 +130,7 @@ html[data-theme=dark] .catering-tag{background:#553927;color:#f0c4a1}
 html[data-theme=dark] .catering-choice-button{background:#a76543;color:#fff}
 html[data-theme=dark] :is(.return-panel,.batch-summary){background:#2b322d;color:#e9eddf;border-color:#657758}
 html[data-theme=dark] .return-panel small{color:#bdcbb3}
-html[data-theme=dark] .return-panel #end-run{background:#526978;color:#fff}
+html[data-theme=dark] .return-panel #end-run{background:#443b24;color:#f1dba8}
 html[data-theme=dark] .return-emblem{background:#405637}
 html[data-theme=dark] .task-bar{background:none;color:#deead1}
 html[data-theme=dark] .task-bar>div{background:#344737}
@@ -166,4 +166,4 @@ html[data-theme=dark] .settings-layout>.help-section{background:#2c342e;border-c
 .appearance-options button[aria-pressed=true]{box-shadow:0 1px 4px #172d2426}
 html[data-theme=dark] .appearance-options{background:#1b201e}
 html[data-theme=dark] .appearance-options button{background:transparent;color:#c8d0ce}
-html[data-theme=dark] .appearance-options button[aria-pressed=true]{background:#526978;color:#fff;box-shadow:0 1px 5px #0004}
+html[data-theme=dark] .appearance-options button[aria-pressed=true]{background:#443b24;color:#f1dba8;box-shadow:0 1px 5px #0004}

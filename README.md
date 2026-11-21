@@ -422,3 +422,7 @@ Validation: existing tests, syntax and whitespace checks passed. Browser checks 
 ## v0.20.2 — Slate highlights and compact appearance
 
 Replaced pastel green dark-mode primary/selected controls with slate blue-gray and white text. Appearance now uses a compact Device / Light / Dark segmented selector, retaining the full accessible device-setting label and 44px touch targets. Browser checks at 390px and 320px confirmed no overflow; syntax and whitespace checks passed.
+
+## v0.20.3 — Warm dark-mode highlights
+
+Dark-mode primary and selected controls now match the sample banner’s brown background and warm gold text, replacing slate blue-gray. Compact appearance layout retained. Verified phone-width rendering, syntax, and whitespace.
