@@ -15,7 +15,7 @@ This first version adds orders only. Mike cannot edit or cancel sent orders yet.
 
 Your iPhone’s installed Home Screen app must already have lock-screen reminders enabled in real-mode Settings. This is the existing free notification connection. Return to sample-mode Settings → Mike’s dispatch and tap Connect dispatch notifications.
 
-Lock the iPhone and send a new fictional addition from the Mac. A New orders from Mike alert should arrive. Delivery depends on the network and iOS notification/Focus settings. Tap it: it should open the sample app and add the order after opening. If notifications are unavailable, additions still arrive when the app is open and connected.
+Lock the iPhone and send a new fictional addition from the Mac. A Test dispatch from Mike alert should arrive. Delivery depends on the network and iOS notification/Focus settings. Tap it: it should open the sample app and add the order after opening. If notifications are unavailable, additions still arrive when the app is open and connected.
 
 Ordinary shift/run reminders remain off in sample mode; only this explicitly connected test-dispatch channel can notify.
 

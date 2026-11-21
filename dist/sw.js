@@ -26,10 +26,10 @@ self.addEventListener('fetch',event=>{
 self.addEventListener('push',event=>event.waitUntil((async()=>{
  let data;try{data=event.data?.json()||{};}catch{data={};}
  const test=!!data.test,run=data.kind==='run',dispatch=data.kind==='dispatch',mode=dispatch&&data.url?.includes('demo=1')?'test':'live';
- await self.registration.showNotification(dispatch?'New orders from Mike':test?'Delivery Manager test':run?'Back at the restaurant?':'Remember to finish your shift',{
+ await self.registration.showNotification(dispatch?(mode==='test'?'Test dispatch from Mike':'New orders from Mike'):test?'Delivery Manager test':run?'Back at the restaurant?':'Remember to finish your shift',{
  body:dispatch?'Open Delivery Manager to receive the new addition.':test?'Lock-screen reminders are connected.':run?'Your deliveries are complete. When you’re back, open Delivery Manager and tap End Run.':'Record your ending mileage and prepare Mike’s report. Still working? Open the app to snooze.',
  icon:new URL('bag-icon-192-v2.png',self.registration.scope).href,badge:new URL('bag-icon-192-v2.png',self.registration.scope).href,
- tag:dispatch?'delivery-manager-dispatch':test?'delivery-manager-test':run?'delivery-manager-run':'delivery-manager-eos',
+ tag:dispatch?'delivery-manager-dispatch-'+mode:test?'delivery-manager-test':run?'delivery-manager-run':'delivery-manager-eos',
  data:{url:new URL(dispatch?(mode==='test'?'?demo=1&notification=dispatch':'?notification=dispatch'):run?'?notification=run':'?notification=eos',self.registration.scope).href,kind:dispatch?'dispatch':run?'run':'eos',mode}});
 })()));
 self.addEventListener('notificationclick',event=>{event.notification.close();event.waitUntil((async()=>{
