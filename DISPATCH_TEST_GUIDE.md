@@ -2,7 +2,7 @@
 
 This first version adds orders only. Mike cannot edit or cancel sent orders yet. Test with made-up names and addresses, not real customers.
 
-1. Update the iPhone app to version 0.15.2 through Settings → Check for updates.
+1. Update the iPhone app to version 0.15.3 through Settings → Check for updates.
 2. On the iPhone, open Settings → Explore sample records. The yellow SAMPLE MODE banner should be visible.
 3. In sample-mode Settings, find Mike’s dispatch and tap Pair manager device. Enter the driver setup code if asked. Copy the private pairing code.
 4. On your Mac, open https://tonykevinjr.github.io/delivery-manager/manager.html and paste that code into Connect to a driver. If Universal Clipboard is enabled, copying on the iPhone lets you paste directly on the Mac. The manager screen must say TEST DISPATCH.
@@ -32,3 +32,9 @@ Ordinary shift/run reminders remain off in sample mode; only this explicitly con
 Repeat pairing from real-mode Settings only when ready for real orders. Test and live pairings are separate. The restaurant phone still needs a camera/scan and screen-layout check. Keep pairing codes private; do not put them in shared documents or public code. Report any unexpected import, wrong mode, duplicate, or missing alert before using dispatch for a busy shift.
 
 Mike’s changes/cancellations are the next stage. For now, he should contact the driver directly if a sent order needs correction. The driver can edit received addresses and manage orders locally using the existing controls.
+
+## Saved drivers and ready orders
+
+Pair each driver phone once per mode. On the manager screen, choose Pair another driver, enter Tony or Charlotte as its name and paste that phone’s code. Both remain in Send orders to. Choose the intended driver before entering the next addition; the send button names the recipient. Existing pairings migrate automatically. Rename driver changes only its manager-side label. Clearing browser data, moving to another phone/browser, or disconnecting requires pairing again. Test and live are separate pairings.
+
+New Mike additions arrive Ready. Singles show Start delivery; batches show Start batch. The driver controls departure. Manager-ready orders do not count as measured zero-minute kitchen preparation in reports.

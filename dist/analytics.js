@@ -1,17 +1,17 @@
-import {miles,TASK_GROUPS,taskLabels} from './domain.js?v=0.15.2';
+import {miles,TASK_GROUPS,taskLabels} from './domain.js?v=0.15.3';
 export const SEATTLE='America/Los_Angeles';
 export const stamp=value=>typeof value==='string'&&Number.isFinite(Date.parse(value))?Date.parse(value):null;
 export const median=values=>{const xs=values.filter(Number.isFinite).sort((a,b)=>a-b),n=xs.length;return n?(xs[Math.floor(n/2)]+xs[Math.ceil(n/2)-1])/2:null;};
 export function minutes(a,b){const start=stamp(a),end=stamp(b);return start!==null&&end!==null&&end>=start?(end-start)/60000:null;}
 export function dayKey(value){return new Intl.DateTimeFormat('en-CA',{timeZone:SEATTLE,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(value));}
 export function clockParts(value){const p=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:SEATTLE,weekday:'short',hour:'2-digit',hourCycle:'h23'}).formatToParts(new Date(value)).map(p=>[p.type,p.value]));return {day:p.weekday,hour:Number(p.hour)};}
-export function recordPreparation(delivery,status,at){delivery.status=status;if(status==='ready')delivery.readyAt=at;else if(status==='pending')delete delivery.readyAt;}
+export function recordPreparation(delivery,status,at){delivery.status=status;delete delivery.readySource;if(status==='ready')delivery.readyAt=at;else if(status==='pending')delete delivery.readyAt;}
 export function recordTasks(shift,tasks,at){const previous=shift.tasks||{},times={...shift.taskCompletedAt};for(const [key,value] of Object.entries(tasks)){if(key==='special'){if(value!==previous.special){if(value)times.special=at;else delete times.special;}}else if(value&&!previous[key])times[key]=at;else if(!value)delete times[key];}shift.tasks=tasks;shift.taskCompletedAt=times;}
 export const taskLeaves=()=>TASK_GROUPS.flatMap(g=>g.children?g.children.map(c=>({key:`${g.id}:${c}`,label:`${g.label}: ${c}`})):[{key:g.id,label:g.label}]);
 export function deliveryTimings(state,delivery){
  const completed=stamp(delivery.completedAt),runs=state.runs.filter(r=>r.shiftId===delivery.shiftId&&r.deliveryIds.includes(delivery.id)&&stamp(r.startedAt)!==null&&(completed===null||stamp(r.startedAt)<=completed)).sort((a,b)=>stamp(b.startedAt)-stamp(a.startedAt));
  const run=runs[0]||null,unreliable=state.shifts?.find(s=>s.id===delivery.shiftId)?.runDataQuality==='field-test-inaccurate',departedAt=unreliable?null:delivery.departedAt||run?.startedAt||null;
- return {id:delivery.id,shiftId:delivery.shiftId,kind:run?run.kind||((run.deliveryIds.length||0)>1?'batch':'single'):'single',enteredAt:delivery.enteredAt||null,readyAt:delivery.readyAt||null,departedAt,completedAt:delivery.completedAt||null,scheduledAt:delivery.scheduledAt||null,addedToReady:minutes(delivery.enteredAt,delivery.readyAt),readyToDeparture:minutes(delivery.readyAt,departedAt),departureToDelivery:minutes(departedAt,delivery.completedAt),scheduledDelta:stamp(delivery.scheduledAt)!==null&&completed!==null?(completed-stamp(delivery.scheduledAt))/60000:null};
+ return {id:delivery.id,shiftId:delivery.shiftId,kind:run?run.kind||((run.deliveryIds.length||0)>1?'batch':'single'):'single',enteredAt:delivery.enteredAt||null,readyAt:delivery.readyAt||null,departedAt,completedAt:delivery.completedAt||null,scheduledAt:delivery.scheduledAt||null,addedToReady:delivery.readySource==='manager-dispatch'?null:minutes(delivery.enteredAt,delivery.readyAt),readyToDeparture:minutes(delivery.readyAt,departedAt),departureToDelivery:minutes(departedAt,delivery.completedAt),scheduledDelta:stamp(delivery.scheduledAt)!==null&&completed!==null?(completed-stamp(delivery.scheduledAt))/60000:null};
 }
 export function reportData(state,shifts){
  const selected=[...shifts].filter(s=>s.status==='finalized').sort((a,b)=>stamp(a.startedAt)-stamp(b.startedAt)),ids=new Set(selected.map(s=>s.id)),deliveries=state.deliveries.filter(d=>ids.has(d.shiftId)&&d.status==='delivered'),timings=deliveries.map(d=>deliveryTimings(state,d)),runs=state.runs.filter(r=>ids.has(r.shiftId));

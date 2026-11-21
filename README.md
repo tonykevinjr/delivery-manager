@@ -366,3 +366,9 @@ QA: automated AES tamper/mode checks; role authorization; idempotent send/import
 Mike’s dispatch uses checkbox choices for drinks/ice cream and alcohol. Drink details are shown and required only when checked; alcohol reveals the signature-receipt/ID reminder. Scheduled Delivery reveals a time dropdown in 15-minute increments using today's date, preserving the original date/time when editing a saved draft. Optional notes remain. Phone entry formats dashes. Checkbox choices are explicit boolean values in dispatches. Driver-side required yes/no choices are unchanged.
 
 Browser QA saved/reopened a fictional order with drinks, alcohol, 7:15 p.m. scheduling and notes; all values persisted. No test dispatch was sent.
+
+## v0.15.3 — Ready dispatches and saved drivers
+
+New manager dispatches arrive ready, with readyAt recorded at receipt. They show Start delivery/Start batch without a Mark ready step. Departure still requires the driver's action. Preparation duration is unknown for manager-ready orders, rather than recorded as zero; an explicit Still preparing/Mark ready cycle restores normal measured timing.
+
+The manager stores multiple named, paired drivers on its device. Existing pairing is migrated without changing credentials. Pair another driver preserves prior pairings; Send orders to selects Tony/Charlotte (and clearly separates Test/Live). Each driver is paired once per mode, not once per shift. Recipient is named on the send button. Switching is locked during a draft or unresolved send, so orders cannot accidentally move to another recipient. Per-driver drafts/outboxes and encryption keys remain separate. Browser storage clearing, a new installation or explicit revocation requires pairing again.
