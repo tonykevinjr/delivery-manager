@@ -25,3 +25,7 @@ Deployment: apply notifications/oil-migration.sql, then deploy the Worker. Priva
 ## Oil sender activated
 
 The oil sending domain is verified and the sending-only key is scoped to that domain. Sender credentials remain Cloudflare secrets. A setup test was confirmed delivered by Resend. Each real installation must still opt in under Settings; sample mode sends no oil email.
+
+## Encrypted dispatch
+
+Apply dispatch-migration.sql before deploying the Worker. No new paid service, secret, or binding is required. The enrolled driver's existing credential creates an inbox, with independently hashed manager-send and driver-receive credentials. Pairing public API never receives the encryption key. Requests are bounded, packet count is capped at 100 per pairing/day, pairings at 6 per enrolled owner, orders at 12 per packet on clients. Cron clears encrypted contents after expiry and sends at most 3 generic dispatch pushes per minute; retries stop after 4 attempts. Driver ack clears ciphertext immediately. No manager update/delete endpoints exist. Test mode is bound to pairing at creation and checked on both ends.

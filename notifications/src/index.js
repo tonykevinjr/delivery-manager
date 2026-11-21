@@ -1,3 +1,4 @@
+import {dispatchRoute,processDispatch} from './dispatch.js';
 import {oilRoute,processOilReminders} from './oil.js';
 import {scanRoute} from './scanner.js';
 import {buildPushPayload} from '@block65/webcrypto-web-push';
@@ -6,7 +7,7 @@ const APP='https://tonykevinjr.github.io/delivery-manager/';
 const hash=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value))),b=>b.toString(16).padStart(2,'0')).join('');
 const json=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
 export async function sendPush(row,env,test=false){
- const subscription=JSON.parse(row.subscription),payload=await buildPushPayload({data:JSON.stringify({kind:row.runReminder?'run':'eos',title:test?'Delivery Manager test':row.runReminder?'Back at the restaurant?':'Remember to finish your shift',body:test?'Lock-screen reminders are connected.':row.runReminder?'Your deliveries are complete. When you’re back, open Delivery Manager and tap End Run.':'Record your ending mileage and prepare Mike’s report. Still working? Open the app to snooze.',url:APP+'?notification='+(row.runReminder?'run':'eos'),test}),options:{ttl:row.runReminder?60:900}},subscription,{subject:APP,publicKey:env.VAPID_PUBLIC_KEY,privateKey:env.VAPID_PRIVATE_KEY});
+ const subscription=JSON.parse(row.subscription),payload=await buildPushPayload({data:JSON.stringify(row.dispatch?{kind:'dispatch',title:'New orders from Mike',body:'Open Delivery Manager to receive the new addition.',url:APP+(row.mode==='test'?'?demo=1&notification=dispatch':'?notification=dispatch'),test:false}: {kind:row.runReminder?'run':'eos',title:test?'Delivery Manager test':row.runReminder?'Back at the restaurant?':'Remember to finish your shift',body:test?'Lock-screen reminders are connected.':row.runReminder?'Your deliveries are complete. When you’re back, open Delivery Manager and tap End Run.':'Record your ending mileage and prepare Mike’s report. Still working? Open the app to snooze.',url:APP+'?notification='+(row.runReminder?'run':'eos'),test}),options:{ttl:row.runReminder?60:900}},subscription,{subject:APP,publicKey:env.VAPID_PUBLIC_KEY,privateKey:env.VAPID_PRIVATE_KEY});
  const response=await fetch(subscription.endpoint,{...payload,redirect:'manual',signal:AbortSignal.timeout(15000)});return response.status;
 }
 export async function scheduled(env,at=Date.now(),sender=sendPush){
@@ -35,6 +36,7 @@ export async function scheduled(env,at=Date.now(),sender=sendPush){
   else await env.DB.prepare('UPDATE devices SET run_due_at=?,run_attempts=run_attempts+1 WHERE id=? AND run_revision=?').bind(row.run_attempts>=4?null:at+Math.min(15,2**row.run_attempts)*60000,row.id,row.run_revision).run();
  }
  await processOilReminders(env,at);
+ await processDispatch(env,at,sender);
 }
 export async function route(request,env){
  const url=new URL(request.url),origin=request.headers.get('Origin'),origins=(env.ALLOWED_ORIGINS||'').split(',');
@@ -43,6 +45,7 @@ export async function route(request,env){
  if(request.method==='OPTIONS')return new Response(null,{status:204});
  if(request.method==='GET'&&url.pathname==='/config')return json({publicKey:env.VAPID_PUBLIC_KEY});
  if(request.method!=='POST')return json({error:'Not found.'},404);
+ if(url.pathname.startsWith('/dispatch/'))return dispatchRoute(request,env);
  if(url.pathname.startsWith('/oil/'))return oilRoute(request,env);
  if(url.pathname.startsWith('/scan'))return scanRoute(request,env);
  if(request.headers.get('Content-Type')?.split(';')[0]!=='application/json')return json({error:'JSON required.'},415);
@@ -81,6 +84,6 @@ export async function route(request,env){
  return json({error:'Not found.'},404);
 }
 export default {
- async fetch(request,env){const origin=request.headers.get('Origin'),allowed=(env.ALLOWED_ORIGINS||'').split(',').includes(origin);let response;try{response=await route(request,env);}catch{response=json({error:'Could not process the reminder request. Check the connection and try again.'},400);}const headers=new Headers(response.headers);if(allowed){headers.set('Access-Control-Allow-Origin',origin);headers.set('Access-Control-Allow-Methods','GET,POST,OPTIONS');headers.set('Access-Control-Allow-Headers','Content-Type,Authorization');headers.set('Vary','Origin');}return new Response(response.body,{status:response.status,headers});},
+ async fetch(request,env,ctx){const origin=request.headers.get('Origin'),allowed=(env.ALLOWED_ORIGINS||'').split(',').includes(origin);let response;try{response=await route(request,env);}catch{response=json({error:'Could not process the reminder request. Check the connection and try again.'},400);}if(response.ok&&new URL(request.url).pathname==='/dispatch/send'&&ctx?.waitUntil)ctx.waitUntil(processDispatch(env,Date.now(),sendPush));const headers=new Headers(response.headers);if(allowed){headers.set('Access-Control-Allow-Origin',origin);headers.set('Access-Control-Allow-Methods','GET,POST,OPTIONS');headers.set('Access-Control-Allow-Headers','Content-Type,Authorization');headers.set('Vary','Origin');}return new Response(response.body,{status:response.status,headers});},
  async scheduled(event,env,ctx){ctx.waitUntil(scheduled(env,event.scheduledTime));}
 };
