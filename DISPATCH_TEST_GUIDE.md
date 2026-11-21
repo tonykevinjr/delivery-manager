@@ -46,3 +46,11 @@ Update the driver app first, then refresh the manager page. In Your dispatched o
 Send two separate singles. Once the updated driver app has synced, Mike gets a Take these orders together? prompt. Create batch sends a request; the original orders are grouped in place and no new delivery copies are created. The first remaining batch is orange; a second concurrent batch is blue. Mike can also select two to twelve unstarted singles and use Create batch from selected. The driver rejects the request if an order is already grouped, missing, completed or underway. Mike sees the result after the driver syncs.
 
 The manager has a local sent-order history and an encrypted recent status view in the server. Shared views expire 24 hours after the driver’s last upload and are refreshed only while connected. Private driver tips, mileage, reimbursement, saved-customer directory and unrelated deliveries are excluded. Existing completed colors are preserved; the update corrects unfinished colors under the new reset rule.
+
+## Mike’s route tools (v0.17.0)
+
+Update the driver app first and refresh the manager page. With a draft addition, use Customize route → Suggest route order, adjust stops with arrows, then Save stop order. Scheduled tags appear on the corresponding orders. View route lets you choose Apple Maps or Google Maps and preview the saved order. Android defaults to Google Maps. Links for more than four Google Maps stops are split into sections. Opening a link does not start the driver's run.
+
+After sending a batch, Customize route can send a revised stop order to the driver while the complete batch is still unstarted. The driver will refuse a request if the batch has changed, contains other orders, or has started. Its confirmed order appears after the next status sync. For an underway batch Mike can still view the remaining route, but route changes must be handled by the driver.
+
+Use the same caveats as the driver's route suggestions: straight-line address locations, scheduled priority and ticket numbers; no traffic/road-time prediction. Check destinations in Maps. The route ends at the last delivery.
