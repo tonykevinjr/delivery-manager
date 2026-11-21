@@ -398,3 +398,11 @@ QA: fictional three-stop draft, matching local locations, route suggestion, manu
 New & ongoing deliveries sit on a deep forest-green work surface, with cream/scheduled/dispatch-colored cards, a warm remaining-order counter, and a stronger active-run outline. Mike's addition colors and scheduled markers remain intact. Completed deliveries occupy a separate muted drawer with a count and native accessible Expand/Collapse summary. The drawer defaults closed and remembers the device's choice separately for sample/live mode, across renders, tab changes and reloads. Individual order/batch expansion still works independently.
 
 This changes presentation only. Browser QA at desktop and 390-pixel width checked expansion, collapse, persisted drawer state, expanded batch layout and no horizontal overflow. No dispatches were sent and no real records were changed.
+
+## v0.19.0 — Clear order-action hierarchy
+
+Delivery cards now have one prominent next action (Mark ready, Start delivery/batch, or Delivered), a compact Preview map/Navigate and Text/call utility row, and a quiet Edit address / Add to batch / More footer. More opens a labeled sheet for preparation status, full order editing, ungrouping, undo and removal as appropriate. Frequent address/batch controls remain directly accessible. Catering photos remain a distinct visible action with photo count. Existing action handlers and delivery confirmations are reused.
+
+On phones the stop number is positioned within the title row instead of taking a full column from the body and controls. State, dispatch colors, scheduled tags and notes remain intact. Small-screen footer icons simplify below 360 pixels to prevent labels overlapping while keeping full touch targets.
+
+QA: sample single order with phone/signature, pending→ready→Still preparing→ready via More, contact popup, address popup/cancel, map-preview dialog, and measured no horizontal/individual-footer overflow at 320 and 390 pixels. No calls, texts, external map launches or real-record changes were made.
