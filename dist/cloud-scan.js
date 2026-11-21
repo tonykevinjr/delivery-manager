@@ -1,5 +1,5 @@
-import {scannerDeviceToken} from './push.js?v=0.15.1';
-import {imageCanvas} from './photo-tools.js?v=0.15.1';
+import {scannerDeviceToken} from './push.js?v=0.15.2';
+import {imageCanvas} from './photo-tools.js?v=0.15.2';
 const API='https://delivery-manager-reminders.tonykevinjr.workers.dev',KEY='delivery-manager-cloud-scan-v1';
 let config=read();
 function read(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch{return null;}}

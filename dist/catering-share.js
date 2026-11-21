@@ -1,5 +1,5 @@
-import {cateringFiles} from './photo-tools.js?v=0.15.1';
-import {requireCateringPhotos} from './field-tools.js?v=0.15.1';
+import {cateringFiles} from './photo-tools.js?v=0.15.2';
+import {requireCateringPhotos} from './field-tools.js?v=0.15.2';
 
 export async function shareCateringPhotos(delivery,{sample=false,platform=globalThis.navigator,onStatus=()=>{}}={}){
  try{

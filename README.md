@@ -360,3 +360,9 @@ After receipt, the active server inbox clears ciphertext. Expired messages are e
 Push reuses the driver's existing notification subscription. Pairing may be created without push; use Connect dispatch notifications once lock-screen reminders are enabled. Test dispatch is an explicit exception to ordinary sample-mode notification suppression, with its own test URL and inbox. Delivery status on the manager means queued/received/expired, not completed delivery. Changes and cancellations are not supported in v1; coordinate directly with the driver. Stable order and dispatch IDs support a later revision protocol.
 
 QA: automated AES tamper/mode checks; role authorization; idempotent send/import/ack; inbox expiry; push queue; per-shift colors and duplicate prevention. Local manager-to-driver browser test sent a three-stop batch followed by a separate single, observed orange then blue and manager receipts. Physical iPhone push and Android camera testing remain required before restaurant rollout. No customer deletion change was implemented.
+
+## v0.15.2 — Manager order-form consistency
+
+Mike’s dispatch uses checkbox choices for drinks/ice cream and alcohol. Drink details are shown and required only when checked; alcohol reveals the signature-receipt/ID reminder. Scheduled Delivery reveals a time dropdown in 15-minute increments using today's date, preserving the original date/time when editing a saved draft. Optional notes remain. Phone entry formats dashes. Checkbox choices are explicit boolean values in dispatches. Driver-side required yes/no choices are unchanged.
+
+Browser QA saved/reopened a fictional order with drinks, alcohol, 7:15 p.m. scheduling and notes; all values persisted. No test dispatch was sent.

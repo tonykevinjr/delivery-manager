@@ -2,7 +2,7 @@
 
 This first version adds orders only. Mike cannot edit or cancel sent orders yet. Test with made-up names and addresses, not real customers.
 
-1. Update the iPhone app to version 0.15.1 through Settings → Check for updates.
+1. Update the iPhone app to version 0.15.2 through Settings → Check for updates.
 2. On the iPhone, open Settings → Explore sample records. The yellow SAMPLE MODE banner should be visible.
 3. In sample-mode Settings, find Mike’s dispatch and tap Pair manager device. Enter the driver setup code if asked. Copy the private pairing code.
 4. On your Mac, open https://tonykevinjr.github.io/delivery-manager/manager.html and paste that code into Connect to a driver. If Universal Clipboard is enabled, copying on the iPhone lets you paste directly on the Mac. The manager screen must say TEST DISPATCH.
