@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS dispatch_views(pair_id TEXT PRIMARY KEY,ciphertext TEXT NOT NULL,iv TEXT NOT NULL,revision INTEGER NOT NULL,updated_at INTEGER NOT NULL,expires_at INTEGER NOT NULL);

@@ -29,3 +29,7 @@ The oil sending domain is verified and the sending-only key is scoped to that do
 ## Encrypted dispatch
 
 Apply dispatch-migration.sql before deploying the Worker. No new paid service, secret, or binding is required. The enrolled driver's existing credential creates an inbox, with independently hashed manager-send and driver-receive credentials. Pairing public API never receives the encryption key. Requests are bounded, packet count is capped at 100 per pairing/day, pairings at 6 per enrolled owner, orders at 12 per packet on clients. Cron clears encrypted contents after expiry and sends at most 3 generic dispatch pushes per minute; retries stop after 4 attempts. Driver ack clears ciphertext immediately. No manager update/delete endpoints exist. Test mode is bound to pairing at creation and checked on both ends.
+
+## Driver status view and batch commands
+
+Apply dispatch-view-migration.sql. dispatch_views stores only ciphertext, IV, revision and timestamps per pairing, with a 24-hour expiry. Only the driver can upload and only its paired manager can read. Monotonic revisions reject stale uploads; each view is authenticated cryptographically to pairing, mode and revision. Disconnect removes views and transport packets. The plaintext order allowlist is enforced on the driver before encrypting. Group commands use the existing encrypted inbox; no server-side plaintext order modification exists. Generic dispatch-update pushes cover additions and regroup requests.
