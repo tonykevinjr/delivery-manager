@@ -1,4 +1,4 @@
-import {scheduledPriority} from './batch-priority.js?v=0.20.0';
+import {scheduledPriority} from './batch-priority.js?v=0.20.1';
 export const QUARTER_MILE=.25;
 const TYPES={AVENUE:'AVE',STREET:'ST',ROAD:'RD',DRIVE:'DR',BOULEVARD:'BLVD',PLACE:'PL',COURT:'CT',LANE:'LN',CIRCLE:'CIR',TERRACE:'TER',PARKWAY:'PKWY',HIGHWAY:'HWY',NORTHWEST:'NW',SOUTHWEST:'SW',NORTHEAST:'NE',SOUTHEAST:'SE',NORTH:'N',SOUTH:'S',EAST:'E',WEST:'W'};
 export function streetKey(value){return String(value||'').toUpperCase().replace(/\b(?:SEATTLE|WHITE CENTER|SHORELINE|BURIEN)\b.*$/,'').replace(/\b(?:WA|WASHINGTON)\b.*$/,'').replace(/\b(?:APT|APARTMENT|UNIT|STE|SUITE|BUILDING|BLDG|FLOOR)\b.*$|#.*$/,'').replace(/(\d+)(?:ST|ND|RD|TH)\b/g,'$1').replace(/[^A-Z0-9 /-]/g,' ').split(/\s+/).filter(Boolean).map(v=>TYPES[v]||v).join(' ').trim();}

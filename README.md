@@ -412,3 +412,9 @@ QA: sample single order with phone/signature, pending→ready→Still preparing�
 Settings → Appearance offers Use device setting (default), Light, and Dark. The installation remembers its selection separately from shift records. An early appearance check prevents a bright startup flash, and device appearance changes apply automatically in system mode. Dark forest surfaces cover driver navigation, forms, delivery controls, dispatch colors, safety tags, return reminders, calculator, and reports. The manager screen retains its existing appearance.
 
 Validation: existing test suite, JavaScript syntax, and whitespace checks passed. Phone-width browser checks covered switching Light/Dark, persistence after reload, order-entry dialogs, settings, and report charts.
+
+## v0.20.1 — Charcoal appearance and organized settings
+
+Dark surfaces now use charcoal gray with restrained green accents. Shift tips have a 24px gap above their card. Settings presents appearance directly, then five expandable groups for restaurant defaults, connections, car/routes, backups/customers, and updates/sample mode. Help stays at the bottom. Existing controls and handlers are retained; open groups survive in-session renders so editing and connection actions remain in context.
+
+Validation: existing tests, syntax and whitespace checks passed. Browser checks at 390px verified the 24px shift gap, zero horizontal overflow, light/dark layouts, defaults edit/cancel, backup control availability, unique IDs, and appearance persistence.
