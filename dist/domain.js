@@ -1,5 +1,5 @@
-import {validSavedTips} from './shift-tools.js?v=0.20.7';
-import {normalizeRunKinds} from './workflow.js?v=0.20.7';
+import {validSavedTips} from './shift-tools.js?v=0.20.8';
+import {normalizeRunKinds} from './workflow.js?v=0.20.8';
 export const miles = s => s.endOdometer == null ? null : Number((s.endOdometer - s.startOdometer).toFixed(3));
 export function validateOdometers(start,end){if(!Number.isFinite(start)||start<0||!Number.isFinite(end)||end<start)throw Error('Ending odometer must be at least the starting reading.');}
 export const reimbursement = s => s.rate == null || miles(s)==null ? null : Math.round((miles(s)*s.rate+Number.EPSILON)*100)/100;

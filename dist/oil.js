@@ -1,5 +1,5 @@
-import {scannerDeviceToken} from './push.js?v=0.20.7';
-import {cloudScanToken} from './cloud-scan.js?v=0.20.7';
+import {scannerDeviceToken} from './push.js?v=0.20.8';
+import {cloudScanToken} from './cloud-scan.js?v=0.20.8';
 export const OIL_INTERVAL=5000,OIL_WARNING=500;
 export function oilRecord(last,due,at=new Date().toISOString()){last=Number(last);due=Number(due);if(!Number.isFinite(last)||last<0||!Number.isFinite(due)||due<=last)throw Error('Enter valid mileage; next oil change must be after the last one.');return {cycle:crypto.randomUUID(),lastChangedMileage:last,dueMileage:due,intervalMiles:OIL_INTERVAL,changedAt:at,emailEnabled:false};}
 export function oilMileage(state){const oil=state.settings.oil;if(!oil)return null;const readings=[];for(const s of state.shifts){if(Number.isFinite(s.startOdometer))readings.push({at:s.startedAt,value:s.startOdometer});if(Number.isFinite(s.endOdometer)&&s.endedAt)readings.push({at:s.endedAt,value:s.endOdometer});}if(oil.manualReading)readings.push({at:oil.manualReading.at,value:oil.manualReading.mileage});readings.sort((a,b)=>Date.parse(b.at)-Date.parse(a.at));return Math.max(oil.lastChangedMileage,readings[0]?.value??oil.lastChangedMileage);}

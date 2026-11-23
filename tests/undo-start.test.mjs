@@ -1,0 +1,6 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {canUndoRunStart,undoRunStart} from '../dist/workflow.js';
+const fixture=()=>({shifts:[{id:'s',status:'active'}],runs:[{id:'r',shiftId:'s',status:'active',deliveryIds:['a','b']}],deliveries:['a','b'].map(id=>({id,status:'active',batchId:'batch',departedAt:'2026-11-22T20:00:00Z',readyAt:'ready-time',name:id}))});
+test('accidental batch start restores readiness and removes false run statistics',()=>{const s=fixture();assert.equal(canUndoRunStart(s,'r'),true);undoRunStart(s,'r');assert.equal(s.runs.length,0);for(const d of s.deliveries){assert.equal(d.status,'ready');assert.equal(d.departedAt,undefined);assert.equal(d.readyAt,'ready-time');assert.equal(d.batchId,'batch');}});
+test('single start is reversible; unrelated records stay intact',()=>{const s=fixture();s.runs[0].deliveryIds=['a'];undoRunStart(s,'r');assert.equal(s.deliveries[0].status,'ready');assert.equal(s.deliveries[1].status,'active');});
+test('completed delivery or ended shift prevents reset atomically',()=>{for(const change of [s=>s.deliveries[0].status='delivered',s=>s.runs[0].status='returned',s=>s.deliveries[0].completedAt='recorded',s=>s.shifts[0].status='finalized']){const s=fixture();change(s);const before=structuredClone(s);assert.throws(()=>undoRunStart(s,'r'));assert.deepEqual(s,before);}});

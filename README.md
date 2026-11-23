@@ -444,3 +444,9 @@ Scanner exit buttons now say Enter manually, including camera, setup, recognitio
 ## v0.20.7 — Single-stop route clarity
 
 Your route is ready omits per-stop navigation links for a one-stop route; routes containing multiple stops show them automatically. Provider labels and URLs continue to follow the saved navigation choice. Verified rendered one/two-stop routes under both Apple and Google settings, plus syntax and whitespace checks.
+
+## v0.20.8 — Undo an accidental delivery start
+
+Active cards retain More. Before any stop in the current run is completed, More → Undo start delivery offers a confirmation to restore all active run orders to Ready, retain batch grouping/readiness/order details, and remove the accidental run/departure from statistics. An audit entry preserves the correction. Completed/returned runs and finalized shifts cannot be reset. Existing Maps navigation must be stopped separately.
+
+Validation: full test suite plus atomic single/batch reset and completed-run rejection tests passed. Browser sample-mode flow verified start, More, confirmation, and successful return to Ready without launching Maps or sending notifications.

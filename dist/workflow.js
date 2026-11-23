@@ -12,3 +12,18 @@ export function deliveryNotes(delivery,value){const notes=String(value??'').trim
 export function mapProvider(settings){return settings?.mapsProvider==='google'?'google':'apple';}
 export function providerName(settings){return mapProvider(settings)==='google'?'Google Maps':'Apple Maps';}
 export function directionsURL(addresses,settings={},normalize=a=>a){if(!addresses.length)throw Error('No stops to navigate.');const stops=addresses.map(normalize);if(mapProvider(settings)==='google'){if(stops.length>4)throw Error('Open this Google Maps route in groups of up to four stops.');const u=new URL('https://www.google.com/maps/dir/');u.searchParams.set('api','1');u.searchParams.set('travelmode','driving');u.searchParams.set('dir_action','navigate');u.searchParams.set('destination',stops.at(-1));if(stops.length>1)u.searchParams.set('waypoints',stops.slice(0,-1).join('|'));return u.href;}const u=new URL('https://maps.apple.com/directions');u.searchParams.set('mode','driving');u.searchParams.set('destination',stops.at(-1));for(const a of stops.slice(0,-1))u.searchParams.append('waypoint',a);return u.href.replaceAll('+','%20');}
+
+export function canUndoRunStart(state,runId){
+ const run=state.runs.find(r=>r.id===runId);
+ if(!run||run.status!=='active'||run.returnedAt||run.completedAt)return false;
+ const orders=run.deliveryIds.map(id=>state.deliveries.find(d=>d.id===id));
+ return orders.length>0&&orders.every(d=>d&&['active','canceled'].includes(d.status)&&!d.completedAt)&&orders.some(d=>d.status==='active');
+}
+export function undoRunStart(state,runId){
+ if(!canUndoRunStart(state,runId))throw Error('This start can no longer be undone. A delivery has been completed or the run has ended.');
+ const run=state.runs.find(r=>r.id===runId);
+ if(!state.shifts.some(s=>s.id===run.shiftId&&s.status==='active'))throw Error('Only the current shift’s start can be undone.');
+ for(const d of state.deliveries.filter(d=>run.deliveryIds.includes(d.id)&&d.status==='active')){d.status='ready';delete d.departedAt;}
+ state.runs=state.runs.filter(r=>r.id!==runId);
+ return run;
+}
