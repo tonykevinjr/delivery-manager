@@ -167,3 +167,6 @@ html[data-theme=dark] .settings-layout>.help-section{background:#2c342e;border-c
 html[data-theme=dark] .appearance-options{background:#1b201e}
 html[data-theme=dark] .appearance-options button{background:transparent;color:#c8d0ce}
 html[data-theme=dark] .appearance-options button[aria-pressed=true]{background:#443b24;color:#f1dba8;box-shadow:0 1px 5px #0004}
+
+/* Separate the batch selection action from the dispatched order cards. */
+.manager-page #batch-selected{margin-bottom:20px}

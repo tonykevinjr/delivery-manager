@@ -432,3 +432,7 @@ Dark-mode primary and selected controls now match the sample banner’s brown ba
 Dispatch shows the usual driver for the current Seattle weekday and pauses each order addition addressed to a different or unrecognized driver. Tony normally works Wednesday–Friday; Charlotte Saturday–Monday; Tuesday has no assumption. The dialog defaults to Go back, preserves drafts on cancellation, and requires an explicit named-recipient confirmation for coverage. It never silently changes recipients. Pending order retries are checked too; existing route/group commands retain their original recipients.
 
 Validation: all existing and new schedule tests pass, including six working nights, Tuesday, Seattle versus UTC dates, and test pairing names. Browser preview of the actual confirmation function verified cancel and coverage branches without sending any orders. Full paired end-to-end dispatch remains a restaurant field-test step.
+
+## v0.20.5 — Dispatch batch-action spacing
+
+Added 20px below Create batch from selected to separate the action from the dispatched order cards. CSS-only behavior change; syntax and whitespace checked.
