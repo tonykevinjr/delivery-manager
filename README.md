@@ -456,3 +456,7 @@ Validation: full test suite plus atomic single/batch reset and completed-run rej
 Renamed visible application branding to Convey, including browser/install names, footer, backup error copy, and reminder/email wording. Tagline: One stop at a time. Mobile wordmark adds 20px top breathing room plus the device safe-area inset. Updated Shift headline/subtitle, empty ready-order copy, road-note punctuation, Delivered workflow label, Tasks headline/instructions, catering customer labels, and help punctuation as requested. Storage identifiers, manifest identity, URLs, backup format, and pairings remain compatible.
 
 Validation: frontend and reminder tests passed; phone-width preview verified branding and Shift/Tasks copy. Existing reminder Worker deployed with name-only message changes. Final iPhone glass positioning should be checked on device.
+
+## v0.21.1 — Convey Dispatch branding
+
+Renamed the manager header, browser title, and driver Settings section to Convey Dispatch. Personal references to Mike as sender/report recipient stay descriptive. Pairing and storage identifiers are unchanged. Syntax and whitespace checked.
