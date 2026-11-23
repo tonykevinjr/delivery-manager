@@ -460,3 +460,7 @@ Validation: frontend and reminder tests passed; phone-width preview verified bra
 ## v0.21.1 — Convey Dispatch branding
 
 Renamed the manager header, browser title, and driver Settings section to Convey Dispatch. Personal references to Mike as sender/report recipient stay descriptive. Pairing and storage identifiers are unchanged. Syntax and whitespace checked.
+
+## v0.21.2 — Leave new-driver pairing
+
+Connect to a driver now has Back when saved drivers exist, restoring the previous selected driver (or the first saved driver after a reload) and that driver's saved draft/outbox. With no paired driver yet, Back to Convey opens the driver app. Saved pairings are retained. Browser QA verified Pair another driver → Back restores the same recipient without a network send. Syntax and whitespace checked.
