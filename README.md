@@ -450,3 +450,9 @@ Your route is ready omits per-stop navigation links for a one-stop route; routes
 Active cards retain More. Before any stop in the current run is completed, More → Undo start delivery offers a confirmation to restore all active run orders to Ready, retain batch grouping/readiness/order details, and remove the accidental run/departure from statistics. An audit entry preserves the correction. Completed/returned runs and finalized shifts cannot be reset. Existing Maps navigation must be stopped separately.
 
 Validation: full test suite plus atomic single/batch reset and completed-run rejection tests passed. Browser sample-mode flow verified start, More, confirmation, and successful return to Ready without launching Maps or sending notifications.
+
+## v0.21.0 — Convey
+
+Renamed visible application branding to Convey, including browser/install names, footer, backup error copy, and reminder/email wording. Tagline: One stop at a time. Mobile wordmark adds 20px top breathing room plus the device safe-area inset. Updated Shift headline/subtitle, empty ready-order copy, road-note punctuation, Delivered workflow label, Tasks headline/instructions, catering customer labels, and help punctuation as requested. Storage identifiers, manifest identity, URLs, backup format, and pairings remain compatible.
+
+Validation: frontend and reminder tests passed; phone-width preview verified branding and Shift/Tasks copy. Existing reminder Worker deployed with name-only message changes. Final iPhone glass positioning should be checked on device.

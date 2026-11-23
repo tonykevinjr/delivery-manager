@@ -1,4 +1,4 @@
-import {addressKey,taskLabels,TASK_GROUPS} from './domain.js?v=0.20.8';
+import {addressKey,taskLabels,TASK_GROUPS} from './domain.js?v=0.21.0';
 export const doNotText=(state,address)=>!!state.addressNotes?.[addressKey(address)]?.doNotText;
 export function setAddressPreference(state,address,key,value){state.addressNotes??={};state.addressNotes[addressKey(address)]={barkingDog:false,...state.addressNotes[addressKey(address)],[key]:!!value};}
 export function mergeOrders(state,shiftId,ids,batchId){const unique=[...new Set(ids)],selected=state.deliveries.filter(d=>unique.includes(d.id));if(selected.length!==unique.length||selected.length<1||selected.some(d=>d.shiftId!==shiftId||!['pending','ready'].includes(d.status)||d.batchId)||state.runs.some(r=>r.status==='active'&&r.deliveryIds.some(id=>unique.includes(id))))throw Error('Choose at least one pending or ready single orders from this shift.');for(const [i,d] of selected.entries()){d.batchId=batchId;d.deliveryMode='batch';d.batchPosition=i;}return batchId;}

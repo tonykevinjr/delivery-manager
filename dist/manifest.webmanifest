@@ -1,6 +1,6 @@
 {
-  "name": "Delivery Manager",
-  "short_name": "Deliveries",
+  "name": "Convey",
+  "short_name": "Convey",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

@@ -170,3 +170,6 @@ html[data-theme=dark] .appearance-options button[aria-pressed=true]{background:#
 
 /* Separate the batch selection action from the dispatched order cards. */
 .manager-page #batch-selected{margin-bottom:20px}
+
+/* Keep the mobile wordmark clear of the iPhone top glass area. */
+@media(max-width:650px){.sidebar{padding-top:calc(38px + env(safe-area-inset-top,0px))}}
