@@ -436,3 +436,7 @@ Validation: all existing and new schedule tests pass, including six working nigh
 ## v0.20.5 — Dispatch batch-action spacing
 
 Added 20px below Create batch from selected to separate the action from the dispatched order cards. CSS-only behavior change; syntax and whitespace checked.
+
+## v0.20.6 — Clear scanner exit label
+
+Scanner exit buttons now say Enter manually, including camera, setup, recognition, and retry screens. Existing close behavior stops the camera/scan and returns to the underlying order form without discarding entered fields. Syntax and whitespace checked.
