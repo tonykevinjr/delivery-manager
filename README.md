@@ -440,3 +440,7 @@ Added 20px below Create batch from selected to separate the action from the disp
 ## v0.20.6 — Clear scanner exit label
 
 Scanner exit buttons now say Enter manually, including camera, setup, recognition, and retry screens. Existing close behavior stops the camera/scan and returns to the underlying order form without discarding entered fields. Syntax and whitespace checked.
+
+## v0.20.7 — Single-stop route clarity
+
+Your route is ready omits per-stop navigation links for a one-stop route; routes containing multiple stops show them automatically. Provider labels and URLs continue to follow the saved navigation choice. Verified rendered one/two-stop routes under both Apple and Google settings, plus syntax and whitespace checks.
