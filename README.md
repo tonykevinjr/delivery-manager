@@ -426,3 +426,9 @@ Replaced pastel green dark-mode primary/selected controls with slate blue-gray a
 ## v0.20.3 — Warm dark-mode highlights
 
 Dark-mode primary and selected controls now match the sample banner’s brown background and warm gold text, replacing slate blue-gray. Compact appearance layout retained. Verified phone-width rendering, syntax, and whitespace.
+
+## v0.20.4 — Dispatch driver schedule safeguard
+
+Dispatch shows the usual driver for the current Seattle weekday and pauses each order addition addressed to a different or unrecognized driver. Tony normally works Wednesday–Friday; Charlotte Saturday–Monday; Tuesday has no assumption. The dialog defaults to Go back, preserves drafts on cancellation, and requires an explicit named-recipient confirmation for coverage. It never silently changes recipients. Pending order retries are checked too; existing route/group commands retain their original recipients.
+
+Validation: all existing and new schedule tests pass, including six working nights, Tuesday, Seattle versus UTC dates, and test pairing names. Browser preview of the actual confirmation function verified cancel and coverage branches without sending any orders. Full paired end-to-end dispatch remains a restaurant field-test step.
