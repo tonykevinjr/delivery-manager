@@ -173,3 +173,42 @@ html[data-theme=dark] .appearance-options button[aria-pressed=true]{background:#
 
 /* Keep the mobile wordmark clear of the iPhone top glass area. */
 @media(max-width:650px){.sidebar{padding-top:calc(38px + env(safe-area-inset-top,0px))}}
+
+/* Status is conveyed by text, border and action color, never color alone. */
+.delivery-status-pending{border-top:4px solid #a7714b}
+.delivery-status-ready{border-top:4px solid #477c57}
+.delivery-status-active{border-top:4px solid #bd8334;box-shadow:0 0 0 2px #bd833447}
+.delivery-command.status-pending .delivery-next{background:#795038;color:#fff8ef}
+.delivery-command.status-ready .delivery-next{background:#245943;color:#fff}
+.delivery-command.status-active .delivery-next{background:#e3bd72;color:#332719}
+.delivery-command.status-active .next-action-icon{background:#5b4129;color:#fff1ce}
+.order-item-list{margin:14px 0;padding:12px 14px;background:#ffffff80;border:1px solid #31574735;border-radius:12px}
+.order-item-list summary{font-weight:650;cursor:pointer}
+.order-item-list p{white-space:pre-wrap;line-height:1.6;font-size:14px;margin-bottom:0}
+.recovery-alert{padding:14px;background:#f5dfbe;color:#623f25;border:1px solid #bd8334;border-radius:12px;margin-top:14px}
+.recovery-alert p{font-size:14px;line-height:1.5}
+.issue-note{color:#8b442f;font-weight:650}
+.issue-bars>div{display:grid;grid-template-columns:minmax(120px,1fr) 2fr 30px;gap:12px;align-items:center;margin:12px 0}
+.issue-bars meter{width:100%;accent-color:#a7714b}
+html[data-theme=dark]{background:#171918;color:#f1eee8}
+html[data-theme=dark] body{background:#171918}
+html[data-theme=dark] :is(.card,.metric,dialog){background:#292d2b;border-color:#646b65}
+html[data-theme=dark] .ongoing-workspace{background:#1d2521;border-color:#5a7567}
+html[data-theme=dark] .ongoing-workspace>.card:not(.dispatch-order):not(.scheduled-delivery){background:#303632}
+html[data-theme=dark] .ongoing-workspace>.batch-summary:not(.dispatch-order):not(.scheduled-delivery){background:#303632}
+html[data-theme=dark] .active-delivery{background:#3b3429!important;border-color:#dcaf69;box-shadow:0 0 0 2px #dcaf6940}
+html[data-theme=dark] .active-delivery>.content>.row h3:before{color:#f5cf8c}
+html[data-theme=dark] .delivery-command.status-pending .delivery-next{background:#704b36;color:#fff0df;border:1px solid #b68a64}
+html[data-theme=dark] .delivery-command.status-ready .delivery-next{background:#315d47;color:#effff2;border:1px solid #80b294}
+html[data-theme=dark] .delivery-command.status-active .delivery-next{background:#e3bd72;color:#2a2319;border:1px solid #f1d496}
+html[data-theme=dark] .delivery-command.status-active .next-action-icon{background:#6a482b;color:#fff2ce}
+html[data-theme=dark] .delivery-quick-row>button{background:#3c433e;border-color:#7c8b80;color:#f4f1e8}
+html[data-theme=dark] .delivery-tools-row>button{color:#e6d8bf}
+html[data-theme=dark] :is(.muted,.address,.private,.preparation-timer){color:#c4cac3}
+html[data-theme=dark] .order-item-list{background:#1d211f;border-color:#69756c}
+html[data-theme=dark] .recovery-alert{background:#483522;color:#ffe0ad;border-color:#b58c52}
+html[data-theme=dark] .issue-note{color:#ffc3a4}
+html[data-theme=dark] .completed-workspace{background:#1b1e1c;border-color:#555e57}
+html[data-theme=dark] .completed-row{background:#222624;border-color:#4d574f}
+html[data-theme=dark] button:focus-visible,html[data-theme=dark] a:focus-visible{outline:3px solid #f1dba8;outline-offset:3px}
+@media(max-width:400px){.issue-bars>div{grid-template-columns:1fr 1fr 24px;font-size:12px;gap:8px}}
