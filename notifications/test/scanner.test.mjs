@@ -14,3 +14,11 @@ test('existing notification enrollment can authorize scanner without OS permissi
 test('uncertain fields are withheld, numeric ticket numbers normalize, and unexpected output keys are excluded',()=>{assert.deepEqual(cleanScanOutput({response:'{"name":"A Name","phone":"bad","address":"uncertain","ticket":15,"uncertain_fields":["address"],"raw_text":"PRIVATE"}'}),{name:'A Name',phone:'',address:'',ticket:'15',uncertain_fields:['address','phone']});assert.equal(cleanScanOutput({response:'{"name":"A Name","ticket":"Order #20"}'}).ticket,'20');assert.throws(()=>cleanScanOutput({response:'not json'}));});
 test('detailed ticket scan preserves items and explicit tip only; card details are discarded',()=>{const v=cleanScanOutput({response:JSON.stringify({name:'Test',items:[{name:'Soup - mild',quantity:2}],tipCents:1500,cardNumber:'DO NOT SAVE',total:99})});assert.equal(v.items[0].quantity,2);assert.equal(v.tipCents,1500);assert.equal(v.cardNumber,undefined);assert.equal(cleanScanOutput({response:'{"name":"Test","tipCents":-1}'}).tipCents,undefined);});
 test('partial long-ticket scans may contain only explicit tip or items, without inventing customer data',()=>{const tip=cleanScanOutput({response:'{"tipCents":2500}'});assert.equal(tip.tipCents,2500);assert.equal(tip.name,'');const items=cleanScanOutput({response:'{"items":[{"name":"Curry","quantity":2}]}'});assert.equal(items.items.length,1);assert.equal(items.phone,'');assert.throws(()=>cleanScanOutput({response:'{}'}),/No readable/);});
+
+test('accepts explicit zero tip and validated order placement timestamps',()=>{
+  const scan=cleanScanOutput({response:{tipCents:0,orderPlacedLocal:'2026-11-26T19:45'}});
+  assert.equal(scan.tipCents,0);
+  assert.equal(scan.orderPlacedLocal,'2026-11-26T19:45');
+  assert.equal(cleanScanOutput({response:{ticket:'12',orderPlacedLocal:'2026-02-30T19:45'}}).orderPlacedLocal,undefined);
+  assert.equal(cleanScanOutput({response:{ticket:'12',orderPlacedLocal:'2026-11-26T19:45',uncertain_fields:['orderPlacedLocal']}}).orderPlacedLocal,undefined);
+});
