@@ -27,3 +27,7 @@ export function undoRunStart(state,runId){
  state.runs=state.runs.filter(r=>r.id!==runId);
  return run;
 }
+
+export function heldForSchedule(d){return d.status==='ready'&&d.scheduleHold===true;}
+export function setScheduleHold(d,hold,at){if(!d?.scheduledAt||!['pending','ready'].includes(d.status))throw Error('Only pending or ready scheduled orders can be held.');if(hold){if(d.status==='pending'){d.status='ready';d.readyAt=at;d.readySource='driver-manual';}d.scheduleHold=true;d.scheduleHeldAt=at;}else{d.scheduleHold=false;d.scheduleReleasedAt=at;}return d;}
+export function recordDepartureOrder(state,shiftId,ids){if(!Array.isArray(ids)||!ids.length||new Set(ids).size!==ids.length)throw Error('Choose an ordered list of ready stops.');const stops=ids.map(id=>state.deliveries.find(d=>d.id===id));if(stops.some(d=>!d||d.shiftId!==shiftId||d.status!=='ready'||heldForSchedule(d)))throw Error('A selected stop is held or no longer ready.');for(const [position,d]of stops.entries())if(d.batchId){d.batchPosition=position;d.routeCustomized=true;d.routeOrderSource='driver-start';}return stops;}

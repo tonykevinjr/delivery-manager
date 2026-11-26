@@ -212,3 +212,14 @@ html[data-theme=dark] .completed-workspace{background:#1b1e1c;border-color:#555e
 html[data-theme=dark] .completed-row{background:#222624;border-color:#4d574f}
 html[data-theme=dark] button:focus-visible,html[data-theme=dark] a:focus-visible{outline:3px solid #f1dba8;outline-offset:3px}
 @media(max-width:400px){.issue-bars>div{grid-template-columns:1fr 1fr 24px;font-size:12px;gap:8px}}
+/* Selection control has its own column, separate from stop number. */
+.delivery.selectable-order{padding-left:98px}
+.delivery.selectable-order>.stop{position:absolute;left:57px;top:25px;width:27px;height:27px}
+.delivery.selectable-order .order-selector{left:17px;top:25px}
+.schedule-hold-note{background:#f1e2c6;color:#654d2e;border:1px solid #b9a278;border-radius:12px;padding:12px;margin-top:12px}
+.schedule-hold-note p{font-size:13px;margin-bottom:0}
+html[data-theme=dark] .schedule-hold-note{background:#453a28;color:#f6dca7;border-color:#a68a59}
+@media(max-width:650px){.delivery.selectable-order{padding-left:14px}.delivery.selectable-order>.stop{left:53px;top:18px}.delivery.selectable-order .order-selector{left:14px;top:18px}.delivery.selectable-order>.content>.row:first-child{padding-left:74px;min-height:30px}}
+.manager-live-counts{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0;padding:16px;background:#e0eadd;border:1px solid #8b9e85;border-radius:12px}.manager-live-counts>*{padding:5px 9px;border-radius:6px;background:#ffffff80}.manager-live-counts>strong{background:#d7b57a;color:#3b301d}
+html[data-theme=dark] .active-run-bar{background:#3b3429;color:#f1dfbf;border:1px solid #a68a59}
+.management-metrics .metric strong{display:block;font-size:30px;line-height:1.2;margin-bottom:8px}.management-metrics .metric small{display:block;color:#617267}

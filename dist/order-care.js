@@ -1,4 +1,4 @@
-import {addressKey} from './domain.js?v=0.22.0';
+import {addressKey} from './domain.js?v=0.23.0';
 export const ISSUE_TYPES=['Forgot item','Incorrect item','Damaged / spilled item','Other'];
 export function cleanItems(value){if(typeof value==='string')return value.split('\n').map(x=>x.trim()).filter(Boolean).slice(0,60).map(name=>({name:name.slice(0,300),quantity:1}));if(!Array.isArray(value))return [];return value.slice(0,60).filter(x=>x&&typeof x.name==='string'&&x.name.trim()).map(x=>({name:x.name.trim().slice(0,300),quantity:Number.isFinite(Number(x.quantity))?Math.min(99,Math.max(1,Math.round(Number(x.quantity)))):1}));}
 export const itemsText=items=>cleanItems(items).map(x=>(x.quantity>1?x.quantity+' × ':'')+x.name).join('\n');

@@ -1,4 +1,4 @@
-import {DEFAULT_SETTINGS} from './config.js?v=0.22.0';
+import {DEFAULT_SETTINGS} from './config.js?v=0.23.0';
 // Synthetic records only. Stored in a separate IndexedDB database.
 export function createDemoData(anchor=new Date()){
  const data={settings:{...DEFAULT_SETTINGS,rate:.73},shifts:[],deliveries:[],runs:[],customers:[],audit:[],demoSeedVersion:1};

@@ -1,0 +1,14 @@
+# Convey 0.23.0
+
+- Prepared scheduled orders can be held. They stay Ready with a prominent hold label. A held stop blocks starting its batch until explicitly released. Scheduled arrival time remains unchanged; a hold is not a guessed departure time. Dispatch can request a hold when manually marking a scheduled order ready.
+- Tip editing is available from More on active/completed order cards and History → Runs. Driver tips stay excluded from Dispatch, Management and Mike's report.
+- Explicit Lunch/Dinner overrides or an actual order-placement timestamp determine tip-out period in Seattle. Before 4 p.m. is lunch; 4 p.m. onward is dinner. Scheduled delivery time and print time never silently decide the period. Unknown periods require review and are excluded from order-based dinner totals.
+- Tip calculator can use recorded dinner ticket tips. This explicitly replaces a manual total; no unverified assumption that a manual total already includes an individual ticket. Order-based totals recalculate on tip/period changes and newly entered eligible tickets.
+- Add a late tip adds to the saved total, retains server count, and recomputes cent-exact 70/15/15 shares. A late ticket already counted in order-based totals should be edited on the order instead of added again as a manual extra.
+- Mobile batch-selection checkboxes and stop circles have separate layout columns.
+- Starting a batch no longer silently regenerates route suggestions. The displayed order is preserved subject to existing explicit scheduled/recovery priorities. Suggest route order remains a deliberate action. Generated Apple/Google URLs retain the first stop as a waypoint and the last stop as destination. Actual Apple Maps behavior still requires an iPhone check.
+- Dispatch's delivery board shows Preparing/Ready/Held/Out for delivery counts and the current shared driver's orders, including view-only driver-created orders. Full item notes are shared subject to the encrypted-view size bound. No private tip values are included.
+- Management foundation: latest shared shift overview, task completions, delivery details and CSV. See admin-foundation.md for implemented scope and the separate owner/staff permissions phase.
+- Counter screen-awake control uses browser wake lock where available; normal device sleep restrictions still apply.
+- Long-ticket scanning offers up to five sections in one in-app session, preserving customer headers, merging overlapping item lines, extracting explicit printed tips and flagging conflicting values. Each photo uses one existing scanner allowance. Photos remain transient. Single-photo entry remains immediate by default.
+- Scanner prompt supports itemized/customer/packer receipts and avoids suggested tip tables, service charges and totals. No claim of model fine-tuning: actual alternate-format samples are still needed to evaluate and refine recognition.

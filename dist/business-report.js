@@ -1,4 +1,4 @@
-import {BUSINESS_DEFAULTS,businessValue} from './business-model.js?v=0.22.0';
+import {BUSINESS_DEFAULTS,businessValue} from './business-model.js?v=0.23.0';
 const money=v=>v===null?'—':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(v),signed=v=>v===null?'—':(v<0?'−':'+')+money(Math.abs(v));
 const num=n=>Number(n.toFixed(1)).toLocaleString();
 const field=(key,label,value,max=10000)=>`<div><label for="business-${key}">${label}</label><input id="business-${key}" name="${key}" type="number" inputmode="decimal" step="any" min="0" max="${max}" value="${value}" required></div>`;
