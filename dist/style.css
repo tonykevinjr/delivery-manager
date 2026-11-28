@@ -223,3 +223,11 @@ html[data-theme=dark] .schedule-hold-note{background:#453a28;color:#f6dca7;borde
 .manager-live-counts{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0;padding:16px;background:#e0eadd;border:1px solid #8b9e85;border-radius:12px}.manager-live-counts>*{padding:5px 9px;border-radius:6px;background:#ffffff80}.manager-live-counts>strong{background:#d7b57a;color:#3b301d}
 html[data-theme=dark] .active-run-bar{background:#3b3429;color:#f1dfbf;border:1px solid #a68a59}
 .management-metrics .metric strong{display:block;font-size:30px;line-height:1.2;margin-bottom:8px}.management-metrics .metric small{display:block;color:#617267}
+.tips-so-far{display:block;font-size:30px;color:#234f42;margin:10px 0}.tip-review-list{display:grid;gap:12px}.tip-review-list label{padding:12px;border:1px solid #a6b29e;border-radius:12px}.tip-review-list label>span{display:block;margin-bottom:8px}.tip-review-list select{margin-bottom:0}html[data-theme=dark] .tips-so-far{color:#f1dba8}
+/* A short, viewport-fixed dock with measured space reserved for the page below it. */
+.return-dock{position:fixed;bottom:20px;gap:14px;padding:12px 16px;min-height:72px;align-items:center}
+.return-dock>div{min-width:0}.return-dock strong{display:block;font-size:14px}.return-dock a{display:inline-block;margin-top:4px;font-size:12px}.return-dock button{font-size:17px;padding:13px 21px;min-height:48px}.return-dock .return-error:empty{display:none}
+.has-return-reminder .main{padding-bottom:calc(var(--return-dock-height,90px) + var(--return-nav-height,0px) + 55px)}
+html:has(body.has-return-reminder){scroll-padding-bottom:calc(var(--return-dock-height,90px) + var(--return-nav-height,0px) + 35px)}
+.has-return-reminder #completed-deliveries>summary{scroll-margin-bottom:calc(var(--return-dock-height,90px) + var(--return-nav-height,0px) + 35px)}
+@media(max-width:650px){.return-dock{bottom:calc(var(--return-nav-height,88px) + 8px);left:12px;right:12px;width:auto;transform:none;max-width:none;min-height:72px;margin:0;border-radius:16px;gap:9px;padding:10px 12px}.return-dock button{font-size:16px;padding:12px 18px}.return-dock strong{font-size:13px}.has-return-reminder .main{padding-bottom:calc(var(--return-nav-height,88px) + var(--return-dock-height,84px) + 60px)}}

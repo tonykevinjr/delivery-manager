@@ -1,0 +1,3 @@
+// Thermal roll-end dye is magenta; black printed strokes remain dark in the red/blue channels.
+export function neutralizePinkPixels(bytes){let changed=0;for(let i=0;i<bytes.length;i+=4){const r=bytes[i],g=bytes[i+1],b=bytes[i+2];if(r-g>25&&b-g>15&&r>75&&b>60){const light=Math.max(r,b);bytes[i]=bytes[i+1]=bytes[i+2]=light;changed++;}}return changed;}
+export function enhanceTicketCanvas(canvas){const ctx=canvas.getContext('2d',{willReadFrequently:true});if(typeof ctx.getImageData!=='function')return 0;const pixels=ctx.getImageData(0,0,canvas.width,canvas.height),changed=neutralizePinkPixels(pixels.data);if(changed)ctx.putImageData(pixels,0,0);return changed;}

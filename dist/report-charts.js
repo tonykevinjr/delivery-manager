@@ -1,4 +1,4 @@
-import {reportData,volumeBuckets,taskLeaves,stamp,SEATTLE} from './analytics.js?v=0.23.0';
+import {reportData,volumeBuckets,taskLeaves,stamp,SEATTLE} from './analytics.js?v=0.24.0';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const num=v=>v===null||!Number.isFinite(v)?'Not recorded':Number(v.toFixed(1)).toLocaleString();
 const date=v=>new Date(v).toLocaleDateString('en-US',{timeZone:SEATTLE,month:'short',day:'numeric'});

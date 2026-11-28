@@ -1,7 +1,7 @@
-import {savedManagerDrivers} from './manager-drivers.js?v=0.23.0';
-import {dispatchCall,openDispatchView} from './dispatch.js?v=0.23.0';
-import {csvCell} from './domain.js?v=0.23.0';
-import {bindCounterAwake} from './counter-tools.js?v=0.23.0';
+import {savedManagerDrivers} from './manager-drivers.js?v=0.24.0';
+import {dispatchCall,openDispatchView} from './dispatch.js?v=0.24.0';
+import {csvCell} from './domain.js?v=0.24.0';
+import {bindCounterAwake} from './counter-tools.js?v=0.24.0';
 const root=document.querySelector('#management'),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const expandedOrders=new Set();
 const formatTime=v=>v&&Number.isFinite(Date.parse(v))?new Date(v).toLocaleString():'not recorded';
